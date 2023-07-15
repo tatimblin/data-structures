@@ -7,6 +7,7 @@
   "scripts": {
     "test": "jest",
     "build": "node ./esbuild.js",
+    "postbuild": "tsc --project tsconfig.build.json",
     "lint": "eslint --fix 'src/**/*.ts",
     "prerelease:major": "npm run build",
     "prerelease:minor": "npm run build",

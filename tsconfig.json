@@ -1,10 +1,16 @@
 {
   "compilerOptions": {
+    "outDir": "dist",
     "target": "esnext",
     "module": "esnext",
+    "moduleResolution": "nodenext",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
-  }
+    "emitDeclarationOnly": true,
+    "declaration": true,
+  },
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules"
+  ]
 }
