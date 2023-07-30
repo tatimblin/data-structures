@@ -1,11 +1,11 @@
 import { Node } from "../node";
 
-export class Trie {
-  #root: Node;
-  #cache: Node;
+export class Trie<T> {
+  #root: Node<T>;
+  #cache: Node<T>;
 
   constructor(words: string[] = []) {
-    this.#root = new Node(null);
+    this.#root = new Node<T>(null);
     this.#cache = this.#root;
 
     for (const word of words) {
