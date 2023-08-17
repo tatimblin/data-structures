@@ -1,24 +1,38 @@
-import { Node } from "../node";
+import { Node } from "./Node";
 
-export class Trie<T> {
-  #root: Node<T>;
-  #cache: Node<T>;
+export class Trie {
+  #root: Node;
+  #cache: Node;
 
-  constructor(words: string[] = []) {
-    this.#root = new Node<T>(null);
+  constructor() {
+    this.#root = new Node("");
     this.#cache = this.#root;
-
-    for (const word of words) {
-      this.add(word);
-    }
   }
 
   /**
    * Adds a new string to the trie
    * @param word - string to add
    */
-  add(word: string): void {
-    throw new Error("Not implemented");
+  add(word: string, node = this.#root): void {
+    const chars = word.split("");
+    this.#insert(chars, node);
+  }
+
+  #insert(chars: string[], node: Node) {
+    if (chars.length === 0) {
+      node.complete.set(true);
+      return;
+    }
+
+    const char = chars.shift() as string;
+
+    if (node.children[char]) {
+      this.#insert(chars, node.children[char]);
+    } else {
+      const newNode = new Node(char);
+      node.children[char] = newNode;
+      this.#insert(chars, newNode);
+    }
   }
 
   /**
