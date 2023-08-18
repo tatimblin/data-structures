@@ -25,6 +25,7 @@ export class Trie {
     }
 
     const char = chars.shift() as string;
+    node.increment();
 
     if (node.children[char]) {
       this.#insert(chars, node.children[char]);
@@ -58,5 +59,12 @@ export class Trie {
    */
   search(word: string): void {
     throw new Error("Not implemented");
+  }
+
+  __debug() {
+    return {
+      root: this.#root,
+      cache: this.#cache,
+    };
   }
 }
