@@ -15,10 +15,10 @@ export class Trie {
    */
   add(word: string, node = this.#root): void {
     const chars = word.split("");
-    this.#insert(chars, node);
+    return this.#add(chars, node);
   }
 
-  #insert(chars: string[], node: Node) {
+  #add(chars: string[], node: Node): void {
     if (chars.length === 0) {
       node.complete.set(true);
       return;
@@ -28,11 +28,11 @@ export class Trie {
     node.increment();
 
     if (node.children[char]) {
-      this.#insert(chars, node.children[char]);
+      this.#add(chars, node.children[char]);
     } else {
       const newNode = new Node(char);
       node.children[char] = newNode;
-      this.#insert(chars, newNode);
+      this.#add(chars, newNode);
     }
   }
 
@@ -40,16 +40,53 @@ export class Trie {
    * Removes a string from the trie
    * @param word - string to remove
    */
-  remove(word: string): void {
-    throw new Error("Not implemented");
+  remove(word: string, node = this.#root): void {
+    const chars = word.split("");
+
+    if (!this.#has([...chars], node)) {
+      throw new Error(`${word} does not exist`);
+    }
+
+    return this.#remove(chars, node);
+  }
+
+  #remove(chars: string[], node: Node): void {
+    if (chars.length === 0) {
+      node.complete.set(false);
+      return;
+    }
+
+    const char = chars.shift() as string;
+    node.decrement();
+
+    if (node.count === 0) {
+      delete node.children[char];
+      return;
+    }
+
+    this.#remove(chars, node.children[char]);
   }
 
   /**
-   * Checks if a string exits in the trie
+   * Checks if a string exists in the trie
    * @param word - string to look for
    */
-  has(word: string): void {
-    throw new Error("Not implemented");
+  has(word: string, node = this.#root): boolean {
+    const chars = word.split("");
+    return this.#has(chars, node);
+  }
+
+  #has(chars: string[], node: Node): boolean {
+    if (chars.length === 0) {
+      return true;
+    }
+
+    const char = chars.shift() as string;
+
+    if (node.children[char]) {
+      return this.#has(chars, node.children[char]);
+    }
+    return false;
   }
 
   /**
