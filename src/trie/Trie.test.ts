@@ -153,7 +153,83 @@ describe("Trie", () => {
     it("returns true if the word exists", () =>{
       const trie = new Trie();
 
-      trie.add("")
-    })
-  })
+      trie.add("found");
+
+      expect(trie.has("found")).toBe(true);
+    });
+
+    it("returns false if the word does not exist", () =>{
+      const trie = new Trie();
+
+      expect(trie.has("missing")).toBe(false);
+    });
+
+    it("returns false if the word no longer exists", () =>{
+      const trie = new Trie();
+
+      trie.add("liberate");
+      expect(trie.has("liberate")).toBe(true);
+
+      trie.remove("liberate");
+      expect(trie.has("liberate")).toBe(false);
+    });
+  });
+
+  describe("search()", () => {
+    it("returns an empty array if the trie is empty", () => {
+      const trie = new Trie();
+
+      expect(trie.search("fruitless")).toEqual([]);
+    });
+
+    it("returns one matching word on an exact match", () => {
+      const trie = new Trie();
+
+      trie.add("emenate");
+
+      expect(trie.search("emenate")).toEqual(["emenate"]);
+    });
+
+    it("returns one matching word on a partial match", () => {
+      const trie = new Trie();
+
+      trie.add("emenate");
+
+      expect(trie.search("eme")).toEqual(["emenate"]);
+    });
+
+    it("returns matching words in a populated trie", () => {
+      const trie = new Trie();
+
+      trie.add("indistinguishable");
+      trie.add("indepth");
+      trie.add("interest");
+      trie.add("identification");
+      trie.add("unrelated");
+
+      expect(trie.search("ind")).toEqual(["indepth", "indistinguishable"]);
+    });
+
+    it("returns all words in a trie", () => {
+      const trie = new Trie();
+
+      trie.add("indistinguishable");
+      trie.add("indepth");
+      trie.add("interest");
+
+      expect(trie.search("in")).toEqual(["interest", "indepth", "indistinguishable"]);
+    });
+
+    it("does not return a word removed from the trie", () => {
+      const trie = new Trie();
+
+      trie.add("indistinguishable");
+      trie.add("indepth");
+      trie.add("interest");
+
+      trie.remove("indepth");
+
+      expect(trie.search("in")).toEqual(["interest", "indistinguishable"]);
+    });
+  });
 });

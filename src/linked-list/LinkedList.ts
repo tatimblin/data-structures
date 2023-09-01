@@ -1,12 +1,12 @@
 import { Node } from "../node";
 
 export class LinkedList<T> {
-  #head: Node<T> | null;
+  #head: Node<T>;
   #size: number;
 
   constructor() {
-    this.#head = null;
-    this.#size = 1;
+    this.#head = new Node();
+    this.#size = 0;
   }
 
   /**
@@ -23,11 +23,6 @@ export class LinkedList<T> {
   push(element: T): void {
     const node = new Node(element);
 
-    if (!this.#head) {
-      this.#head = node;
-      return;
-    }
-
     let pointer = this.#head;
 
     while (pointer && pointer.next) {
@@ -42,15 +37,15 @@ export class LinkedList<T> {
    * Removes and returns the element at the tail of the linked list.
    */
   pop(): T | null {
-    if (this.#size === 0 || !this.#head) {
-      throw new Error("Linked list is empty");
+    if (this.#size === 0) {
+      return null;
     }
 
-    if (this.#size === 1 && this.#head) {
-      const temp = this.#head;
-      this.#head = new Node<T>();
+    if (this.#size === 1 && this.#head.next) {
+      const node = this.#head.next.element;
+      this.#head = new Node();
       this.#size = 0;
-      return temp.element;
+      return node;
     }
 
     let pointer = this.#head;
@@ -60,7 +55,6 @@ export class LinkedList<T> {
     }
 
     const temp = pointer.next;
-
     pointer.next = null;
     this.#size -= 1;
 
@@ -71,19 +65,13 @@ export class LinkedList<T> {
    * Adds an element at a specific index.
    */
   insertAt(element: T, index: number): void {
-    this.#validateIndex(index === 0 ? index : index - 1);
+    this.#validateIndex(index, true);
 
     const node = new Node(element);
 
-    if (index === 0) {
-      node.next = this.#head;
-      this.#head = node;
-      return;
-    }
+    let pointer: Node<T> | null = this.#head;
 
-    let pointer = this.#head;
-
-    for (let i = 1; i < index; i++) {
+    for (let i = 1; i <= index; i++) {
       if (!pointer) throw new Error(`Missing node in position ${i}`);
       pointer = pointer.next;
     }
@@ -104,12 +92,11 @@ export class LinkedList<T> {
    */
   getFrom(index: number): T | null {
     this.#validateIndex(index);
-    if (index === 0) return this.#head && this.#head.element;
-    if (index === 1) return this.#head && this.#head.next && this.#head.next.element;
+    if (index === 0) return this.#head.next && this.#head.next.element;
 
-    let pointer = this.#head;
+    let pointer: Node<T> | null = this.#head;
 
-    for (let i = 0; i < index; i++) {
+    for (let i = 0; i <= index; i++) {
       if (!pointer) throw new Error(`Missing node in position ${i}`);
       pointer = pointer.next;
     }
@@ -143,8 +130,9 @@ export class LinkedList<T> {
   /**
    * Throws an error if an index is out of bounds
    */
-  #validateIndex(index: number): void {
-    if (index < 0 || index >= this.size) {
+  #validateIndex(index: number, tail?: boolean): void {
+    const size = tail ? this.size : this.size - 1;
+    if (index < 0 || index > size) {
       throw new Error("Index is out of bounds");
     }
   }
