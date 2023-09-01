@@ -21,3 +21,4 @@ const linkedList = new LinkedList();
 ## Contents
 
 - [Linked List](src/linked-list)
+- [Trie](src/trie)
