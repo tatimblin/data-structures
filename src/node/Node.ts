@@ -1,8 +1,24 @@
-export class Node {
-  element: any;
-  next: Node | null;
+export class Completable {
+  #isComplete: boolean;
 
-  constructor(element: any) {
+  constructor() {
+    this.#isComplete = false;
+  }
+
+  set(state: boolean) {
+    this.#isComplete = state;
+  }
+
+  get() {
+      return this.#isComplete;
+  }
+}
+
+export class Node<T> {
+  element: T | null;
+  next: Node<T> | null;
+
+  constructor(element: T | null = null) {
     this.element = element;
     this.next = null;
   }

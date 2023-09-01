@@ -1,37 +1,87 @@
 import { Node } from "../node";
 
-export class LinkedList {
-  #head: Node | null;
+export class LinkedList<T> {
+  #head: Node<T>;
   #size: number;
 
   constructor() {
-    this.#head = null;
+    this.#head = new Node();
     this.#size = 0;
   }
 
+  /**
+   * The number of nodes in the linked list
+   */
   get size(): number {
     return this.#size;
   }
 
   /**
-   * Adds an element to the tail of the linked list
+   * Adds an element at the tail of the linked list
    * @param element - the element to add
    */
-  add(element: any): void {
+  push(element: T): void {
     const node = new Node(element);
 
-    if (this.#head === null) {
-      this.#head = node;
-    } else {
-      let current = this.#head;
+    let pointer = this.#head;
 
-      while (current.next) {
-        current = current.next;
-      }
-
-      current.next = node;
+    while (pointer && pointer.next) {
+      pointer = pointer.next;
     }
 
+    pointer.next = node;
+    this.#size += 1;
+  }
+
+  /**
+   * Removes and returns the element at the tail of the linked list.
+   */
+  pop(): T | null {
+    if (this.#size === 0) {
+      return null;
+    }
+
+    if (this.#size === 1 && this.#head.next) {
+      const node = this.#head.next.element;
+      this.#head = new Node();
+      this.#size = 0;
+      return node;
+    }
+
+    let pointer = this.#head;
+
+    while(pointer && pointer.next?.next) {
+      pointer = pointer.next;
+    }
+
+    const temp = pointer.next;
+    pointer.next = null;
+    this.#size -= 1;
+
+    return temp && temp.element;
+  }
+
+  /**
+   * Adds an element at a specific index.
+   */
+  insertAt(element: T, index: number): void {
+    this.#validateIndex(index, true);
+
+    const node = new Node(element);
+
+    let pointer: Node<T> | null = this.#head;
+
+    for (let i = 1; i <= index; i++) {
+      if (!pointer) throw new Error(`Missing node in position ${i}`);
+      pointer = pointer.next;
+    }
+
+    if (!pointer) throw new Error(`Missing node in position ${index}`);
+
+    node.next = pointer.next;
+    if (pointer) {
+      pointer.next = node;
+    }
     this.#size += 1;
   }
 
@@ -40,20 +90,50 @@ export class LinkedList {
    * @param index - the index to 
    * @returns {any} - an element in the linked list
    */
-  getFrom(index: number) {
-    if (index < 0 || index >= this.#size) throw new Error("Index out of bounds");
-    if (index === 0) return this.#head?.element;
+  getFrom(index: number): T | null {
+    this.#validateIndex(index);
+    if (index === 0) return this.#head.next && this.#head.next.element;
 
-    let current = this.#head;
-    let iteration = 0;
+    let pointer: Node<T> | null = this.#head;
 
-    while (iteration < index) {
-      if (!current) throw new Error(`Missing node in position ${iteration}`);
-
-      current = current.next;
-      iteration += 1;
+    for (let i = 0; i <= index; i++) {
+      if (!pointer) throw new Error(`Missing node in position ${i}`);
+      pointer = pointer.next;
     }
 
-    return current?.element;
+    if (!pointer) throw new Error(`Missing node in position ${index}`);
+
+    return pointer.element;
+  }
+
+  /**
+   * Removes a node from the list and returns its element.
+   */
+  removeFrom(): void {
+    throw new Error("Not implemented");
+  }
+
+  /**
+   * Find and removes a specific element.
+   */
+  removeElement(): void {
+    throw new Error("Not implemented");
+  }
+
+  /**
+   * Return the index of a specific element.
+   */
+  indexOf(): void {
+    throw new Error("Not implemented");
+  }
+
+  /**
+   * Throws an error if an index is out of bounds
+   */
+  #validateIndex(index: number, tail?: boolean): void {
+    const size = tail ? this.size : this.size - 1;
+    if (index < 0 || index > size) {
+      throw new Error("Index is out of bounds");
+    }
   }
 }
