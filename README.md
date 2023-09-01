@@ -1,4 +1,6 @@
 # @tristimb/data-structures
+![npm (scoped)](https://img.shields.io/npm/v/%40tristimb/data-structures)
+
 npm package implementation of common data strcutures
 
 ## Getting started
