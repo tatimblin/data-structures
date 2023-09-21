@@ -1,3 +1,3 @@
-export * from "./node"; 
-export * from "./linked-list"; 
-export * from "./trie"; 
+export * from "./node/index.js"; 
+export * from "./linked-list/index.js"; 
+export * from "./trie/index.js"; 

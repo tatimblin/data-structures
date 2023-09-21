@@ -1,4 +1,4 @@
-import { LinkedList } from ".";
+import { LinkedList } from "./LinkedList.js";
 
 describe("LinkedList", () => {
   describe("push()", () => {

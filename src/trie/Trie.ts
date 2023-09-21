@@ -1,5 +1,5 @@
-import { Node } from "./Node";
-import { LinkedList } from "..";
+import { Node } from "./Node.js";
+import { LinkedList } from "../linked-list/LinkedList.js";
 
 export class Trie {
   #root: Node;

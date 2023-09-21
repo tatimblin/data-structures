@@ -1,1 +1,1 @@
-export * from "./LinkedList";
+export * from "./LinkedList.js";

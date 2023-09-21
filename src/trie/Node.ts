@@ -1,4 +1,4 @@
-import { Completable } from "..";
+import { Completable } from "../node/index.js";
 
 export class Node {
   element: string;

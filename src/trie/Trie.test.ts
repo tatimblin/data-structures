@@ -1,5 +1,5 @@
-import { Trie } from "./Trie";
-import { Node } from "./Node";
+import { Trie } from "./Trie.js";
+import { Node } from "./Node.js";
 
 type NodeTuple = [
   element: string,
