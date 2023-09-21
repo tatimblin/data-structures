@@ -4,6 +4,7 @@
   "description": "implementation of common data structures",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "test": "jest",
     "build": "node ./esbuild.js",
