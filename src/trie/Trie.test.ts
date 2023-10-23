@@ -23,7 +23,7 @@ function getNodeArray(root: Node, traversal: string): NodeTuple[] {
 
     return [
       root.element,
-      root.count,
+      root.count.get(),
       root.complete.get(),
     ];
   })
@@ -208,6 +208,18 @@ describe("Trie", () => {
       trie.add("unrelated");
 
       expect(trie.search("ind")).toEqual(["indepth", "indistinguishable"]);
+    });
+
+    it("returns matching words in a populated trie", () => {
+      const trie = new Trie();
+
+      trie.add("indistinguishable", 0);
+      trie.add("indepth", 1);
+      trie.add("interest", 2);
+      trie.add("identification", 3);
+      trie.add("unrelated", 4);
+
+      expect(trie.search("ind")).toEqual(["indistinguishable", "indepth"]);
     });
 
     it("returns all words in a trie", () => {

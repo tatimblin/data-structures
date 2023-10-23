@@ -16,31 +16,32 @@ export class Trie {
    * Adds a new string to the trie
    * @param word - string to add
    */
-  add(word: string): void {
+  add(word: string, weight = Infinity): void {
     const chars = word.split("");
 
     if (this.#has([...chars], this.#root)) {
-      throw new Error(`${word} already exists`);
+      throw new Error(`"${word}" already exists`);
     }
   
-    return this.#add(chars, this.#root);
+    return this.#add(chars, weight, this.#root);
   }
 
-  #add(chars: string[], node: Node): void {
+  #add(chars: string[], weight: number, node: Node): void {
     if (chars.length === 0) {
       node.complete.set(true);
+      node.weight = weight;
       return;
     }
 
     const char = chars.shift() as string;
-    node.increment();
+    node.count.increment();
 
     if (node.children[char]) {
-      this.#add(chars, node.children[char]);
+      this.#add(chars, weight, node.children[char]);
     } else {
       const newNode = new Node(char);
       node.children[char] = newNode;
-      this.#add(chars, newNode);
+      this.#add(chars, weight, newNode);
     }
   }
 
@@ -65,9 +66,9 @@ export class Trie {
     }
 
     const char = chars.shift() as string;
-    node.decrement();
+    node.count.decrement();
 
-    if (node.count === 0) {
+    if (node.count.get() === 0) {
       delete node.children[char];
       return;
     }
@@ -120,7 +121,7 @@ export class Trie {
 
     this.#cache = node;
 
-    const result: string[] = [];
+    const result: [string, number][] = []; // TODO: replace with heap
     const queue = new LinkedList<[Node, string]>();
     queue.push([node, this.#prefix]);
 
@@ -132,7 +133,7 @@ export class Trie {
       }
 
       if (node.complete.get() && word) {
-        result.push(word);
+        result.push([word, node.weight]);
       }
 
       node.children && Object.values(node.children).forEach((node) => {
@@ -140,7 +141,9 @@ export class Trie {
       });
     }
 
-    return result;
+    result.sort((a, b) => a[1] - b[1]);
+
+    return result.map(([word]) => word);
   }
 
   #cursor(chars: string[], node: Node): Node {

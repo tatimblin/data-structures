@@ -5,11 +5,21 @@ export class Node {
   children: { [key:string]: Node };
   complete: Completable;
   count: Countable;
+  #weight: number;
 
-  constructor(element: string) {
+  constructor(element: string, weight = Infinity) {
     this.element = element;
     this.children = {};
     this.complete = new Completable();
     this.count = new Countable();
+    this.#weight = weight;
+  }
+
+  get weight() {
+    return this.#weight;
+  }
+
+  set weight(num: number) {
+    this.#weight = num;
   }
 }
