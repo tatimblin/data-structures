@@ -225,9 +225,9 @@ describe("Trie", () => {
     it("returns all words in a trie", () => {
       const trie = new Trie();
 
-      trie.add("indistinguishable");
-      trie.add("indepth");
-      trie.add("interest");
+      trie.add("indistinguishable", 2);
+      trie.add("indepth", 1);
+      trie.add("interest", 0);
 
       expect(trie.search("in")).toEqual(["interest", "indepth", "indistinguishable"]);
     });
@@ -235,9 +235,9 @@ describe("Trie", () => {
     it("does not return a word removed from the trie", () => {
       const trie = new Trie();
 
-      trie.add("indistinguishable");
-      trie.add("indepth");
-      trie.add("interest");
+      trie.add("indistinguishable", 2);
+      trie.add("indepth", 1);
+      trie.add("interest", 0);
 
       trie.remove("indepth");
 
