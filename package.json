@@ -47,6 +47,9 @@
     "typescript": "^5.1.6"
   },
   "jest": {
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
     "moduleFileExtensions": [
       "ts",
       "js"
