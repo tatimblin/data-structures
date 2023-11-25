@@ -1,2 +1,2 @@
-export * from "./Node.js";
+export * from "./Completable.js";
 export * from "./Countable.js";

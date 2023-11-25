@@ -1,4 +1,4 @@
-import { Node } from "../node/index.js";
+import { Node } from "./Node.js";
 
 export class LinkedList<T> {
   #head: Node<T>;
