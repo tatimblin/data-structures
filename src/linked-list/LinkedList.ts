@@ -148,8 +148,26 @@ export class LinkedList<T> {
   /**
    * Given an element it removes a node from the list and returns its element.
    */
-  removeElement(): T {
-    throw new Error("Not implemented");
+  removeElement(element: T): T {
+    let pointer: Node<T> | null = this.#head;
+
+    while (pointer) {
+      if (pointer.element && pointer.element === element) {
+        const element = pointer.element;
+        if (pointer.next) {
+          pointer.next.prev = pointer.prev;
+        }
+        if (pointer.prev) {
+          pointer.prev.next = pointer.next;
+        }
+        this.#size -= 1;
+        return element;
+      }
+
+      pointer = pointer.next;
+    }
+
+    throw new Error("Element not found");
   }
 
   /**

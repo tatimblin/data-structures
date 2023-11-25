@@ -181,7 +181,61 @@ describe("LinkedList", () => {
     });
   });
 
-  describe("removeElement()" , () => {});
+  describe("removeElement()" , () => {
+    it("removes the head of a linked list with a single node", () => {
+      const LL = new LinkedList<number>();
+
+      LL.push(1);
+
+      expect(LL.removeElement(1)).toEqual(1);
+      expect(LL.size).toEqual(0);
+    });
+
+    it("removes a node from the head of a linked list", () => {
+      const LL = new LinkedList<number>();
+
+      LL.push(1);
+      LL.push(2);
+      LL.push(3);
+
+      expect(LL.removeElement(1)).toEqual(1);
+      expect(LL.size).toEqual(2);
+    });
+
+    it("removes a node from the middle of a linked list", () => {
+      const LL = new LinkedList<number>();
+
+      LL.push(1);
+      LL.push(2);
+      LL.push(3);
+      LL.push(4);
+
+      expect(LL.removeElement(3)).toEqual(3);
+      expect(LL.size).toEqual(3);
+    });
+
+    it("removes a node from the tail of a linked list", () => {
+      const LL = new LinkedList<number>();
+
+      LL.push(1);
+      LL.push(2);
+      LL.push(3);
+
+      expect(LL.removeElement(3)).toEqual(3);
+      expect(LL.size).toEqual(2);
+    });
+
+    it("throws an error when index is out of bounds", () => {
+      const LL = new LinkedList<number>();
+
+      LL.push(1);
+      LL.push(2);
+      LL.push(3);
+
+      expect(() => LL.removeElement(0)).toThrow("Element not found");
+      expect(() => LL.removeElement(4)).toThrow("Element not found");
+    });
+  });
 
   describe("indexOf()" , () => {});
 })
