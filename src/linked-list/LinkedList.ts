@@ -29,6 +29,7 @@ export class LinkedList<T> {
       pointer = pointer.next;
     }
 
+    node.prev = pointer;
     pointer.next = node;
     this.#size += 1;
   }
@@ -107,23 +108,53 @@ export class LinkedList<T> {
   }
 
   /**
-   * Removes a node from the list and returns its element.
+   * Given an index it removes a node from the list and returns its element.
    */
-  removeFrom(): void {
+  removeFrom(index: number): T | null {
+    this.#validateIndex(index);
+    // if (index === 0) {
+    //   const result: T = this.#head.next?.element as T;
+    //   this.#head.next = null;
+    //   return result;
+    // }
+
+    // 1. get parent pointer of element to be deleted
+    // 2. store element to be deleted
+    // 3. set parent.next to node.next
+    // 4. set node.next.prev to parent
+    let pointer: Node<T> = this.#head;
+
+    for (let i = 1; i <= index; i++) {
+      if (!pointer.next) {
+        throw new Error(`Missing node in position ${i}`);
+      }
+      pointer = pointer.next;
+    }
+
+    if (!pointer.next) {
+      throw new Error(`Missing node in position ${index}`);
+    }
+
+    const element = pointer.next.element;
+    pointer.next = pointer.next.next;
+    if (pointer.next) {
+      pointer.next.prev = pointer;
+    }
+
+    return element;
+  }
+
+  /**
+   * Given an element it removes a node from the list and returns its element.
+   */
+  removeElement(): T {
     throw new Error("Not implemented");
   }
 
   /**
-   * Find and removes a specific element.
+   * Given an element it returns that nodes index.
    */
-  removeElement(): void {
-    throw new Error("Not implemented");
-  }
-
-  /**
-   * Return the index of a specific element.
-   */
-  indexOf(): void {
+  indexOf(): T {
     throw new Error("Not implemented");
   }
 

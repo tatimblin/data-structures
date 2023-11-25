@@ -3,7 +3,7 @@ import { LinkedList } from "./LinkedList.js";
 describe("LinkedList", () => {
   describe("push()", () => {
     it("adds node to head of linked list", () => {
-      const LL = new LinkedList();
+      const LL = new LinkedList<string>();
 
       LL.push("My first node");
 
@@ -12,7 +12,7 @@ describe("LinkedList", () => {
     });
 
     it("adds multiple nodes to linked list", () => {
-      const LL = new LinkedList();
+      const LL = new LinkedList<string>();
 
       LL.push("My first node");
       LL.push("My second node");
@@ -24,7 +24,7 @@ describe("LinkedList", () => {
 
   describe("pop()" , () => {
     it("removes head node when size is one", () => {
-      const LL = new LinkedList();
+      const LL = new LinkedList<string>();
 
       LL.push("My first node");
       LL.pop();
@@ -33,7 +33,7 @@ describe("LinkedList", () => {
     });
 
     it("removes tail node", () => {
-      const LL = new LinkedList();
+      const LL = new LinkedList<string>();
 
       LL.push("My first node");
       LL.push("My second node");
@@ -44,7 +44,7 @@ describe("LinkedList", () => {
     });
 
     it("removes tail node of a large linked list", () => {
-      const LL = new LinkedList();
+      const LL = new LinkedList<string>();
 
       LL.push("My first node");
       LL.push("My second node");
@@ -62,7 +62,7 @@ describe("LinkedList", () => {
 
   describe("insertAt()" , () => {
     it("inserts a node at the head of an empty linked list", () => {
-      const LL = new LinkedList();
+      const LL = new LinkedList<string>();
 
       LL.insertAt("My first node", 0);
 
@@ -70,7 +70,7 @@ describe("LinkedList", () => {
     });
 
     it("inserts a node at the middle of a populated linked list", () => {
-      const LL = new LinkedList();
+      const LL = new LinkedList<string>();
 
       LL.push("My first node");
       LL.push("My third node");
@@ -80,7 +80,7 @@ describe("LinkedList", () => {
     });
 
     it("inserts a node at the head of a populated linked list", () => {
-      const LL = new LinkedList();
+      const LL = new LinkedList<string>();
 
       LL.push("My second node");
       LL.push("My third node");
@@ -90,7 +90,7 @@ describe("LinkedList", () => {
     });
   
     it("inserts a node at the tail of a populated linked list", () => {
-      const LL = new LinkedList();
+      const LL = new LinkedList<string>();
 
       LL.push("My first node");
       LL.push("My second node");
@@ -102,7 +102,7 @@ describe("LinkedList", () => {
 
   describe("getFrom()", () => {
     it("gets from nth position in linked list", () => {
-      const LL = new LinkedList();
+      const LL = new LinkedList<string>();
 
       LL.push("My first node");
       LL.push("My second node");
@@ -114,7 +114,7 @@ describe("LinkedList", () => {
     });
 
     it("throws an error when index is out of bounds", () => {
-      const LL = new LinkedList();
+      const LL = new LinkedList<string>();
 
       LL.push("My first node");
       LL.push("My second node");
@@ -125,7 +125,61 @@ describe("LinkedList", () => {
     });
   });
 
-  describe("removeFrom()" , () => {});
+  describe("removeFrom()" , () => {
+    it("removes the head of a linked list with a single node", () => {
+      const LL = new LinkedList<number>();
+
+      LL.push(1);
+
+      expect(LL.removeFrom(0)).toEqual(1);
+      expect(LL.size).toEqual(0);
+    });
+
+    it("removes a node from the head of a linked list", () => {
+      const LL = new LinkedList<number>();
+
+      LL.push(1);
+      LL.push(2);
+      LL.push(3);
+
+      expect(LL.removeFrom(0)).toEqual(1);
+      expect(LL.size).toEqual(2);
+    });
+
+    it("removes a node from the middle of a linked list", () => {
+      const LL = new LinkedList<number>();
+
+      LL.push(1);
+      LL.push(2);
+      LL.push(3);
+      LL.push(4);
+
+      expect(LL.removeFrom(2)).toEqual(3);
+      expect(LL.size).toEqual(3);
+    });
+
+    it("removes a node from the tail of a linked list", () => {
+      const LL = new LinkedList<number>();
+
+      LL.push(1);
+      LL.push(2);
+      LL.push(3);
+
+      expect(LL.removeFrom(2)).toEqual(3);
+      expect(LL.size).toEqual(2);
+    });
+
+    it("throws an error when index is out of bounds", () => {
+      const LL = new LinkedList<number>();
+
+      LL.push(1);
+      LL.push(2);
+      LL.push(3);
+
+      expect(LL.removeFrom(-1)).toThrow("index is out of bounds");
+      expect(LL.removeFrom(3)).toThrow("index is out of bounds");
+    });
+  });
 
   describe("removeElement()" , () => {});
 
