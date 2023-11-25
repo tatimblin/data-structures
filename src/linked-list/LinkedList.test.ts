@@ -176,8 +176,8 @@ describe("LinkedList", () => {
       LL.push(2);
       LL.push(3);
 
-      expect(LL.removeFrom(-1)).toThrow("index is out of bounds");
-      expect(LL.removeFrom(3)).toThrow("index is out of bounds");
+      expect(() => LL.removeFrom(-1)).toThrow("Index is out of bounds");
+      expect(() => LL.removeFrom(3)).toThrow("Index is out of bounds");
     });
   });
 

@@ -135,13 +135,14 @@ export class LinkedList<T> {
       throw new Error(`Missing node in position ${index}`);
     }
 
-    const element = pointer.next.element;
-    pointer.next = pointer.next.next;
+    const node = pointer.next;
+    pointer.next = pointer.next?.next || null;
+    this.#size -= 1;
     if (pointer.next) {
       pointer.next.prev = pointer;
     }
 
-    return element;
+    return node?.element;
   }
 
   /**
