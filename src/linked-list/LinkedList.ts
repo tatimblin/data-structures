@@ -112,37 +112,25 @@ export class LinkedList<T> {
    */
   removeFrom(index: number): T | null {
     this.#validateIndex(index);
-    // if (index === 0) {
-    //   const result: T = this.#head.next?.element as T;
-    //   this.#head.next = null;
-    //   return result;
-    // }
 
-    // 1. get parent pointer of element to be deleted
-    // 2. store element to be deleted
-    // 3. set parent.next to node.next
-    // 4. set node.next.prev to parent
     let pointer: Node<T> = this.#head;
 
-    for (let i = 1; i <= index; i++) {
+    for (let i = 0; i <= index; i++) {
       if (!pointer.next) {
         throw new Error(`Missing node in position ${i}`);
       }
       pointer = pointer.next;
     }
 
-    if (!pointer.next) {
-      throw new Error(`Missing node in position ${index}`);
-    }
-
-    const node = pointer.next;
-    pointer.next = pointer.next?.next || null;
-    this.#size -= 1;
     if (pointer.next) {
-      pointer.next.prev = pointer;
+      pointer.next.prev = pointer.prev;
+    }
+    if (pointer.prev) {
+      pointer.prev.next = pointer.next;
+      this.#size -= 1;
     }
 
-    return node?.element;
+    return pointer.element;
   }
 
   /**
