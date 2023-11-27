@@ -134,14 +134,14 @@ export class LinkedList<T> {
   }
 
   /**
-   * Given an element it removes a node from the list and returns its element.
+   * Given an element it removes a node from the list and returns its index.
    */
-  removeElement(element: T): T {
-    let pointer: Node<T> | null = this.#head;
+  removeElement(element: T): number {
+    let pointer: Node<T> | null = this.#head.next;
+    let index = 0;
 
     while (pointer) {
       if (pointer.element && pointer.element === element) {
-        const element = pointer.element;
         if (pointer.next) {
           pointer.next.prev = pointer.prev;
         }
@@ -149,13 +149,15 @@ export class LinkedList<T> {
           pointer.prev.next = pointer.next;
         }
         this.#size -= 1;
-        return element;
+
+        return index;
       }
 
       pointer = pointer.next;
+      index += 1;
     }
 
-    throw new Error("Element not found");
+    return -1;
   }
 
   /**
