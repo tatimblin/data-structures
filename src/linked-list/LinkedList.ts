@@ -1,4 +1,5 @@
 import { Node } from "./Node.js";
+import { deepEquals } from "../utils/index.js";
 
 export class LinkedList<T> {
   #head: Node<T>;
@@ -141,7 +142,7 @@ export class LinkedList<T> {
     let index = 0;
 
     while (pointer) {
-      if (pointer.element && pointer.element === element) {
+      if (pointer.element && deepEquals(pointer.element, element)) {
         if (pointer.next) {
           pointer.next.prev = pointer.prev;
         }
@@ -163,8 +164,20 @@ export class LinkedList<T> {
   /**
    * Given an element it returns that nodes index.
    */
-  indexOf(): T {
-    throw new Error("Not implemented");
+  indexOf(element: T): number {
+    let pointer: Node<T> | null = this.#head.next;
+    let index = 0;
+
+    while (pointer) {
+      if (pointer.element && deepEquals(pointer.element, element)) {
+        return index;
+      }
+
+      pointer = pointer.next;
+      index += 1;
+    }
+
+    return -1;
   }
 
   /**
