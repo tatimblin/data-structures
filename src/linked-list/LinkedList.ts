@@ -1,4 +1,5 @@
-import { Node } from "../node/index.js";
+import { Node } from "./Node.js";
+import { deepEquals } from "../utils/index.js";
 
 export class LinkedList<T> {
   #head: Node<T>;
@@ -29,6 +30,7 @@ export class LinkedList<T> {
       pointer = pointer.next;
     }
 
+    node.prev = pointer;
     pointer.next = node;
     this.#size += 1;
   }
@@ -107,24 +109,75 @@ export class LinkedList<T> {
   }
 
   /**
-   * Removes a node from the list and returns its element.
+   * Given an index it removes a node from the list and returns its element.
    */
-  removeFrom(): void {
-    throw new Error("Not implemented");
+  removeFrom(index: number): T | null {
+    this.#validateIndex(index);
+
+    let pointer: Node<T> = this.#head;
+
+    for (let i = 0; i <= index; i++) {
+      if (!pointer.next) {
+        throw new Error(`Missing node in position ${i}`);
+      }
+      pointer = pointer.next;
+    }
+
+    if (pointer.next) {
+      pointer.next.prev = pointer.prev;
+    }
+    if (pointer.prev) {
+      pointer.prev.next = pointer.next;
+      this.#size -= 1;
+    }
+
+    return pointer.element;
   }
 
   /**
-   * Find and removes a specific element.
+   * Given an element it removes a node from the list and returns its index.
    */
-  removeElement(): void {
-    throw new Error("Not implemented");
+  removeElement(element: T): number {
+    let pointer: Node<T> | null = this.#head.next;
+    let index = 0;
+
+    while (pointer) {
+      if (pointer.element && deepEquals(pointer.element, element)) {
+        if (pointer.next) {
+          pointer.next.prev = pointer.prev;
+        }
+        if (pointer.prev) {
+          pointer.prev.next = pointer.next;
+        }
+        this.#size -= 1;
+
+        return index;
+      }
+
+      pointer = pointer.next;
+      index += 1;
+    }
+
+    return -1;
   }
 
   /**
-   * Return the index of a specific element.
+   * Given an element it returns that nodes index.
    */
-  indexOf(): void {
-    throw new Error("Not implemented");
+  indexOf(element: T): number {
+    let pointer: Node<T> | null = this.#head.next;
+    let index = 0;
+
+    while (pointer) {
+      if (pointer.element && deepEquals(pointer.element, element)) {
+        return index;
+      }
+
+      pointer = pointer.next;
+      index += 1;
+    }
+
+    return -1;
   }
 
   /**

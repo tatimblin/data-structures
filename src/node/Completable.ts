@@ -13,13 +13,3 @@ export class Completable {
       return this.#isComplete;
   }
 }
-
-export class Node<T> {
-  element: T | null;
-  next: Node<T> | null;
-
-  constructor(element: T | null = null) {
-    this.element = element;
-    this.next = null;
-  }
-}
