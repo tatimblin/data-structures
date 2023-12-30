@@ -53,8 +53,8 @@ describe("LinkedList", () => {
       LL.push("My fifth node");
       LL.push("My sixth node");
       LL.push("My seventh node");
-      LL.pop();
 
+      expect(LL.pop()).toEqual("My seventh node");
       expect(LL.size).toEqual(6);
       expect(() => LL.getFrom(6)).toThrow("Index is out of bounds");
     });
@@ -167,6 +167,30 @@ describe("LinkedList", () => {
 
       expect(LL.removeFrom(2)).toEqual(3);
       expect(LL.size).toEqual(2);
+    });
+
+    it("removes mulitple nodes from a linked list", () => {
+      const LL = new LinkedList<number>();
+
+      LL.push(1);
+      LL.push(2);
+      LL.push(3);
+
+      expect(LL.removeFrom(0)).toEqual(1);
+      expect(LL.removeFrom(1)).toEqual(3);
+      expect(LL.size).toEqual(1);
+    });
+
+    it("removes mulitple consecutive nodes from a linked list", () => {
+      const LL = new LinkedList<number>();
+
+      LL.push(1);
+      LL.push(2);
+      LL.push(3);
+
+      expect(LL.removeFrom(1)).toEqual(2);
+      expect(LL.removeFrom(1)).toEqual(3);
+      expect(LL.size).toEqual(1);
     });
 
     it("throws an error when index is out of bounds", () => {
