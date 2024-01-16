@@ -15,11 +15,7 @@ export class LeastRecentlyUsed<T> {
      * @returns 
      */
     push(element: T): void {
-        const currentIndex = this.#linkedList.indexOf(element);
-        if (currentIndex !== -1) {
-            this.#linkedList.removeFrom(currentIndex);
-        }
-
+        this.#linkedList.removeElement(element);
         this.#linkedList.insertAt(element, 0);
 
         if (this.#linkedList.size > this.#maxSize) {

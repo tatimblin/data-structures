@@ -30,7 +30,7 @@ export class LinkedList<T> {
       pointer = pointer.next;
     }
 
-    node.prev = pointer;
+    node.prev = pointer; // || this.#head;
     pointer.next = node;
     this.#size += 1;
   }
@@ -73,7 +73,7 @@ export class LinkedList<T> {
 
     let pointer: Node<T> | null = this.#head;
 
-    for (let i = 1; i <= index; i++) {
+    for (let i = 0; i < index; i++) {
       if (!pointer) throw new Error(`Missing node in position ${i}`);
       pointer = pointer.next;
     }
@@ -116,22 +116,27 @@ export class LinkedList<T> {
 
     let pointer: Node<T> = this.#head;
 
-    for (let i = 0; i <= index; i++) {
+    // -1 to account for virtual head
+    for (let i = -1; i < index; i++) {
       if (!pointer.next) {
         throw new Error(`Missing node in position ${i}`);
       }
       pointer = pointer.next;
     }
 
+    const temp = pointer.element;
+
     if (pointer.next) {
-      pointer.next.prev = pointer.prev;
-    }
-    if (pointer.prev) {
-      pointer.prev.next = pointer.next;
-      this.#size -= 1;
+      pointer.element = pointer.next.element;
+      pointer.next = pointer.next.next
+    } else {
+      pointer.element = null;
+      pointer.next = null;
     }
 
-    return pointer.element;
+    this.#size -= 1;
+
+    return temp;
   }
 
   /**
