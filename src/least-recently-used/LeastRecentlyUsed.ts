@@ -23,6 +23,10 @@ export class LeastRecentlyUsed<T> {
         }
     }
 
+    /**
+     * Removes and returns the element at the head of the cache.
+     * @returns element at the head of the cache
+     */
     shift(): T | null {
         return this.#linkedList.removeFrom(0);
     }
@@ -31,14 +35,27 @@ export class LeastRecentlyUsed<T> {
         return new Error("Not yet implemented");
     }
 
+    /**
+     * Clears the cache.
+     */
     clear() {
         this.#linkedList = new LinkedList<T>();
     }
 
+    /**
+     * Removes and returns the element at a particular index in the cache.
+     * @param index - the index of the element to remove
+     * @returns {T} element at index in cache
+     */
     removeFrom(index: number): T | null {
         return this.#linkedList.removeFrom(index);
     }
 
+    /**
+     * Removes an element from the cache, and returns the index it was removed at.
+     * @param element - the element to remove
+     * @returns {number} index of element removed
+     */
     removeElement(element: T): number {
         return this.#linkedList.removeElement(element);
     }
@@ -50,5 +67,13 @@ export class LeastRecentlyUsed<T> {
      */
     indexOf(element: T) {
         return this.#linkedList.indexOf(element);
+    }
+
+    /**
+     * Get the size of the cache.
+     * @returns {number} size of the cache
+     */
+    get size() {
+        return this.#linkedList.size;
     }
 }

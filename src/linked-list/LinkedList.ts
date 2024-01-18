@@ -148,6 +148,7 @@ export class LinkedList<T> {
 
     while (pointer) {
       if (pointer.element && deepEquals(pointer.element, element)) {
+        console.log("found match", pointer.element, element)
         if (pointer.next) {
           pointer.next.prev = pointer.prev;
         }
