@@ -53,8 +53,8 @@ describe("LinkedList", () => {
       LL.push("My fifth node");
       LL.push("My sixth node");
       LL.push("My seventh node");
-      LL.pop();
 
+      expect(LL.pop()).toEqual("My seventh node");
       expect(LL.size).toEqual(6);
       expect(() => LL.getFrom(6)).toThrow("Index is out of bounds");
     });
@@ -125,6 +125,40 @@ describe("LinkedList", () => {
     });
   });
 
+  describe("getFromRange()", () => {
+    it("returns complete linked list as a list of elements", () => {
+      const LL = new LinkedList<string>();
+
+      LL.push("My first node");
+      LL.push("My second node");
+      LL.push("My third node");
+
+      expect(LL.getFromRange()).toEqual(["My first node", "My second node", "My third node"]);
+    });
+
+    it("returns partial linked list as a list of elements", () => {
+      const LL = new LinkedList<string>();
+
+      LL.push("My first node");
+      LL.push("My second node");
+      LL.push("My third node");
+      LL.push("My fourth node");
+      LL.push("My fifth node");
+
+      expect(LL.getFromRange(1, 3)).toEqual(["My second node", "My third node", "My fourth node"]);
+    });
+
+    it("returns partial linked list as a list of elements with range overload", () => {
+      const LL = new LinkedList<string>();
+
+      LL.push("My first node");
+      LL.push("My second node");
+      LL.push("My third node");
+
+      expect(LL.getFromRange(1, 5)).toEqual(["My second node", "My third node"]);
+    });
+  });
+
   describe("removeFrom()" , () => {
     it("removes the head of a linked list with a single node", () => {
       const LL = new LinkedList<number>();
@@ -167,6 +201,30 @@ describe("LinkedList", () => {
 
       expect(LL.removeFrom(2)).toEqual(3);
       expect(LL.size).toEqual(2);
+    });
+
+    it("removes mulitple nodes from a linked list", () => {
+      const LL = new LinkedList<number>();
+
+      LL.push(1);
+      LL.push(2);
+      LL.push(3);
+
+      expect(LL.removeFrom(0)).toEqual(1);
+      expect(LL.removeFrom(1)).toEqual(3);
+      expect(LL.size).toEqual(1);
+    });
+
+    it("removes mulitple consecutive nodes from a linked list", () => {
+      const LL = new LinkedList<number>();
+
+      LL.push(1);
+      LL.push(2);
+      LL.push(3);
+
+      expect(LL.removeFrom(1)).toEqual(2);
+      expect(LL.removeFrom(1)).toEqual(3);
+      expect(LL.size).toEqual(1);
     });
 
     it("throws an error when index is out of bounds", () => {

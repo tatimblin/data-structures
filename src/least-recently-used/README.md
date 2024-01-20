@@ -18,26 +18,22 @@ Adds a new element or moves an existing element to the head of the cache.
 
 Remove and return the head of the cache.
 
-### pop(): T
-
-Remove and return the tail of the cache.
-
-### get(index: number): T
-
-Returns the element at the specified index in the cache. Default = 0.
-
-### has(element: T): boolean
-
-Returns true if the element is present in the cache.
-
 ### list(): T[]
 
 Return an array of each element in the cache.
 
-### delete(element: T): T
-
-Remove a specific node in the cache
-
 ### clear(): void
 
 Remove all nodes in cache.
+
+### removeFrom(index: number): T | null
+
+Removes an element from the cache, and returns the element.
+
+### removeElement(element: T): number
+
+Removes whatever element is at a particular index, and returns the index.
+
+### indexOf(): number
+
+Returns the index of an element in the cache.

@@ -27,7 +27,7 @@ const linkedList = new LinkedList();
 | Graph |             | TBD  |
 | Hash Set |             | TBD  |
 | Heap |             | TBD  |
-| LRU Cache |             | TBD  |
-| [Linked List](src/linked-list/) | An array like data structure nodes hold pointers to their neighbors. | TBD |
+| [LRU Cache](src/least-recently-used/) | A FIFO queue that implements an underlying Linked List. | [Activity Cache](https://github.com/tatimblin/lru-image-gallery)  |
+| [Linked List](src/linked-list/) | A list like data structure where nodes hold pointers to their neighbors. | TBD |
 | Stack |             | TBD  |
 | [Trie](src/trie) | A tree based data structure where each node contains a character from a set of strings, as child nodes. | [Typeahead / Spell Check](https://tatimblin.github.io/trie-autocomplete/) |

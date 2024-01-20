@@ -30,7 +30,7 @@ export class LinkedList<T> {
       pointer = pointer.next;
     }
 
-    node.prev = pointer;
+    node.prev = pointer; // || this.#head;
     pointer.next = node;
     this.#size += 1;
   }
@@ -73,7 +73,7 @@ export class LinkedList<T> {
 
     let pointer: Node<T> | null = this.#head;
 
-    for (let i = 1; i <= index; i++) {
+    for (let i = 0; i < index; i++) {
       if (!pointer) throw new Error(`Missing node in position ${i}`);
       pointer = pointer.next;
     }
@@ -90,7 +90,7 @@ export class LinkedList<T> {
   /**
    * Gets an element from the linked list at a specified index
    * @param index - the index to 
-   * @returns {any} - an element in the linked list
+   * @returns {T} an element in the linked list
    */
   getFrom(index: number): T | null {
     this.#validateIndex(index);
@@ -109,6 +109,37 @@ export class LinkedList<T> {
   }
 
   /**
+   * Gets all elements from the linked list at a specified range
+   * @param start - the starting index
+   * @param end - the ending index
+   * @returns {[]T} a list of elements in the linked list
+   */
+  getFromRange(start = 0, end = this.#size): T[] {
+    const list: T[] = [];
+
+    let pointer: Node<T> = this.#head;
+    let index = 0;
+    while(pointer.next) {
+      pointer = pointer.next;
+      if (!pointer || !pointer.element) {
+        break;
+      }
+
+      if (index >= start) {
+        list.push(pointer.element);
+      }
+
+      if (index >= end) {
+        break;
+      }
+
+      index += 1;
+    }
+
+    return list;
+  }
+
+  /**
    * Given an index it removes a node from the list and returns its element.
    */
   removeFrom(index: number): T | null {
@@ -116,22 +147,27 @@ export class LinkedList<T> {
 
     let pointer: Node<T> = this.#head;
 
-    for (let i = 0; i <= index; i++) {
+    // -1 to account for virtual head
+    for (let i = -1; i < index; i++) {
       if (!pointer.next) {
         throw new Error(`Missing node in position ${i}`);
       }
       pointer = pointer.next;
     }
 
+    const temp = pointer.element;
+
     if (pointer.next) {
-      pointer.next.prev = pointer.prev;
-    }
-    if (pointer.prev) {
-      pointer.prev.next = pointer.next;
-      this.#size -= 1;
+      pointer.element = pointer.next.element;
+      pointer.next = pointer.next.next
+    } else {
+      pointer.element = null;
+      pointer.next = null;
     }
 
-    return pointer.element;
+    this.#size -= 1;
+
+    return temp;
   }
 
   /**
