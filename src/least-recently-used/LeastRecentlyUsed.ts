@@ -32,7 +32,7 @@ export class LeastRecentlyUsed<T> {
     }
 
     list() {
-        return new Error("Not yet implemented");
+        return this.#linkedList.getFromRange();
     }
 
     /**

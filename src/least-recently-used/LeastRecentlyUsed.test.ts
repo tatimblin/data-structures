@@ -52,11 +52,17 @@ describe("LeastRecentlyUsed", () => {
         });
     });
 
-    // describe("list()", () => {
-    //     it("", () => {
-    //         const LRU = new LeastRecentlyUsed();
-    //     });
-    // });
+    describe("list()", () => {
+        it("", () => {
+            const LRU = new LeastRecentlyUsed<number>(3);
+
+            LRU.push(3);
+            LRU.push(2);
+            LRU.push(1);
+
+            expect(LRU.list()).toEqual([1, 2, 3]);
+        });
+    });
 
     describe("clear()", () => {
         it("clears an empty cache", () => {

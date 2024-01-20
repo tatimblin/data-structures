@@ -90,7 +90,7 @@ export class LinkedList<T> {
   /**
    * Gets an element from the linked list at a specified index
    * @param index - the index to 
-   * @returns {any} - an element in the linked list
+   * @returns {T} an element in the linked list
    */
   getFrom(index: number): T | null {
     this.#validateIndex(index);
@@ -106,6 +106,37 @@ export class LinkedList<T> {
     if (!pointer) throw new Error(`Missing node in position ${index}`);
 
     return pointer.element;
+  }
+
+  /**
+   * Gets all elements from the linked list at a specified range
+   * @param start - the starting index
+   * @param end - the ending index
+   * @returns {[]T} a list of elements in the linked list
+   */
+  getFromRange(start = 0, end = this.#size): T[] {
+    const list: T[] = [];
+
+    let pointer: Node<T> = this.#head;
+    let index = 0;
+    while(pointer.next) {
+      pointer = pointer.next;
+      if (!pointer || !pointer.element) {
+        break;
+      }
+
+      if (index >= start) {
+        list.push(pointer.element);
+      }
+
+      if (index >= end) {
+        break;
+      }
+
+      index += 1;
+    }
+
+    return list;
   }
 
   /**
@@ -148,7 +179,6 @@ export class LinkedList<T> {
 
     while (pointer) {
       if (pointer.element && deepEquals(pointer.element, element)) {
-        console.log("found match", pointer.element, element)
         if (pointer.next) {
           pointer.next.prev = pointer.prev;
         }
