@@ -87,6 +87,8 @@ describe("LinkedList", () => {
       LL.insertAt("My first node", 0);
 
       expect(LL.getFrom(0)).toEqual("My first node");
+      expect(LL.getFrom(1)).toEqual("My second node");
+      expect(LL.getFrom(2)).toEqual("My third node");
     });
   
     it("inserts a node at the tail of a populated linked list", () => {
