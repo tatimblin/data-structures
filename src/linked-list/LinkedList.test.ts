@@ -7,7 +7,7 @@ describe("LinkedList", () => {
 
       LL.push("My first node");
 
-      expect(LL.getFrom(0)).toEqual("My first node");
+      expect(LL.getElementByIndex(0)).toEqual("My first node");
       expect(LL.size).toEqual(1);
     });
 
@@ -40,7 +40,7 @@ describe("LinkedList", () => {
       LL.pop();
 
       expect(LL.size).toEqual(1);
-      expect(() => LL.getFrom(1)).toThrow("Index is out of bounds");
+      expect(() => LL.getElementByIndex(1)).toThrow("Index is out of bounds");
     });
 
     it("removes tail node of a large linked list", () => {
@@ -56,17 +56,17 @@ describe("LinkedList", () => {
 
       expect(LL.pop()).toEqual("My seventh node");
       expect(LL.size).toEqual(6);
-      expect(() => LL.getFrom(6)).toThrow("Index is out of bounds");
+      expect(() => LL.getElementByIndex(6)).toThrow("Index is out of bounds");
     });
   });
 
-  describe("insertAt()" , () => {
+  describe("insertElementAtIndex()" , () => {
     it("inserts a node at the head of an empty linked list", () => {
       const LL = new LinkedList<string>();
 
-      LL.insertAt("My first node", 0);
+      LL.insertElementAtIndex("My first node", 0);
 
-      expect(LL.getFrom(0)).toEqual("My first node");
+      expect(LL.getElementByIndex(0)).toEqual("My first node");
     });
 
     it("inserts a node at the middle of a populated linked list", () => {
@@ -74,9 +74,9 @@ describe("LinkedList", () => {
 
       LL.push("My first node");
       LL.push("My third node");
-      LL.insertAt("My second node", 1);
+      LL.insertElementAtIndex("My second node", 1);
 
-      expect(LL.getFrom(1)).toEqual("My second node");
+      expect(LL.getElementByIndex(1)).toEqual("My second node");
     });
 
     it("inserts a node at the head of a populated linked list", () => {
@@ -84,11 +84,11 @@ describe("LinkedList", () => {
 
       LL.push("My second node");
       LL.push("My third node");
-      LL.insertAt("My first node", 0);
+      LL.insertElementAtIndex("My first node", 0);
 
-      expect(LL.getFrom(0)).toEqual("My first node");
-      expect(LL.getFrom(1)).toEqual("My second node");
-      expect(LL.getFrom(2)).toEqual("My third node");
+      expect(LL.getElementByIndex(0)).toEqual("My first node");
+      expect(LL.getElementByIndex(1)).toEqual("My second node");
+      expect(LL.getElementByIndex(2)).toEqual("My third node");
     });
   
     it("inserts a node at the tail of a populated linked list", () => {
@@ -96,13 +96,13 @@ describe("LinkedList", () => {
 
       LL.push("My first node");
       LL.push("My second node");
-      LL.insertAt("My third node", 2);
+      LL.insertElementAtIndex("My third node", 2);
 
-      expect(LL.getFrom(2)).toEqual("My third node");
+      expect(LL.getElementByIndex(2)).toEqual("My third node");
     });
   });
 
-  describe("getFrom()", () => {
+  describe("getElementByIndex()", () => {
     it("gets from nth position in linked list", () => {
       const LL = new LinkedList<string>();
 
@@ -110,9 +110,9 @@ describe("LinkedList", () => {
       LL.push("My second node");
       LL.push("My third node");
 
-      expect(LL.getFrom(0)).toEqual("My first node");
-      expect(LL.getFrom(1)).toEqual("My second node");
-      expect(LL.getFrom(2)).toEqual("My third node");
+      expect(LL.getElementByIndex(0)).toEqual("My first node");
+      expect(LL.getElementByIndex(1)).toEqual("My second node");
+      expect(LL.getElementByIndex(2)).toEqual("My third node");
     });
 
     it("throws an error when index is out of bounds", () => {
@@ -122,52 +122,18 @@ describe("LinkedList", () => {
       LL.push("My second node");
       LL.push("My third node");
 
-      expect(() => LL.getFrom(-1)).toThrow("Index is out of bounds");
-      expect(() => LL.getFrom(3)).toThrow("Index is out of bounds");
+      expect(() => LL.getElementByIndex(-1)).toThrow("Index is out of bounds");
+      expect(() => LL.getElementByIndex(3)).toThrow("Index is out of bounds");
     });
   });
 
-  describe("getFromRange()", () => {
-    it("returns complete linked list as a list of elements", () => {
-      const LL = new LinkedList<string>();
-
-      LL.push("My first node");
-      LL.push("My second node");
-      LL.push("My third node");
-
-      expect(LL.getFromRange()).toEqual(["My first node", "My second node", "My third node"]);
-    });
-
-    it("returns partial linked list as a list of elements", () => {
-      const LL = new LinkedList<string>();
-
-      LL.push("My first node");
-      LL.push("My second node");
-      LL.push("My third node");
-      LL.push("My fourth node");
-      LL.push("My fifth node");
-
-      expect(LL.getFromRange(1, 3)).toEqual(["My second node", "My third node", "My fourth node"]);
-    });
-
-    it("returns partial linked list as a list of elements with range overload", () => {
-      const LL = new LinkedList<string>();
-
-      LL.push("My first node");
-      LL.push("My second node");
-      LL.push("My third node");
-
-      expect(LL.getFromRange(1, 5)).toEqual(["My second node", "My third node"]);
-    });
-  });
-
-  describe("removeFrom()" , () => {
+  describe("removeElementByElement()" , () => {
     it("removes the head of a linked list with a single node", () => {
       const LL = new LinkedList<number>();
 
       LL.push(1);
 
-      expect(LL.removeFrom(0)).toEqual(1);
+      expect(LL.removeElementByElement(0)).toEqual(1);
       expect(LL.size).toEqual(0);
     });
 
@@ -178,7 +144,7 @@ describe("LinkedList", () => {
       LL.push(2);
       LL.push(3);
 
-      expect(LL.removeFrom(0)).toEqual(1);
+      expect(LL.removeElementByElement(0)).toEqual(1);
       expect(LL.size).toEqual(2);
     });
 
@@ -190,7 +156,7 @@ describe("LinkedList", () => {
       LL.push(3);
       LL.push(4);
 
-      expect(LL.removeFrom(2)).toEqual(3);
+      expect(LL.removeElementByElement(2)).toEqual(3);
       expect(LL.size).toEqual(3);
     });
 
@@ -201,7 +167,7 @@ describe("LinkedList", () => {
       LL.push(2);
       LL.push(3);
 
-      expect(LL.removeFrom(2)).toEqual(3);
+      expect(LL.removeElementByElement(2)).toEqual(3);
       expect(LL.size).toEqual(2);
     });
 
@@ -212,8 +178,8 @@ describe("LinkedList", () => {
       LL.push(2);
       LL.push(3);
 
-      expect(LL.removeFrom(0)).toEqual(1);
-      expect(LL.removeFrom(1)).toEqual(3);
+      expect(LL.removeElementByElement(0)).toEqual(1);
+      expect(LL.removeElementByElement(1)).toEqual(3);
       expect(LL.size).toEqual(1);
     });
 
@@ -224,8 +190,8 @@ describe("LinkedList", () => {
       LL.push(2);
       LL.push(3);
 
-      expect(LL.removeFrom(1)).toEqual(2);
-      expect(LL.removeFrom(1)).toEqual(3);
+      expect(LL.removeElementByElement(1)).toEqual(2);
+      expect(LL.removeElementByElement(1)).toEqual(3);
       expect(LL.size).toEqual(1);
     });
 
@@ -236,18 +202,18 @@ describe("LinkedList", () => {
       LL.push(2);
       LL.push(3);
 
-      expect(() => LL.removeFrom(-1)).toThrow("Index is out of bounds");
-      expect(() => LL.removeFrom(3)).toThrow("Index is out of bounds");
+      expect(() => LL.removeElementByElement(-1)).toThrow("Index is out of bounds");
+      expect(() => LL.removeElementByElement(3)).toThrow("Index is out of bounds");
     });
   });
 
-  describe("removeElement()" , () => {
+  describe("removeElementByElement()" , () => {
     it("removes the head of a linked list with a single node", () => {
       const LL = new LinkedList<number>();
 
       LL.push(1);
 
-      expect(LL.removeElement(1)).toEqual(0);
+      expect(LL.removeElementByElement(1)).toEqual(0);
       expect(LL.size).toEqual(0);
     });
 
@@ -258,7 +224,7 @@ describe("LinkedList", () => {
       LL.push(2);
       LL.push(3);
 
-      expect(LL.removeElement(1)).toEqual(0);
+      expect(LL.removeElementByElement(1)).toEqual(0);
       expect(LL.size).toEqual(2);
     });
 
@@ -270,7 +236,7 @@ describe("LinkedList", () => {
       LL.push(3);
       LL.push(4);
 
-      expect(LL.removeElement(3)).toEqual(2);
+      expect(LL.removeElementByElement(3)).toEqual(2);
       expect(LL.size).toEqual(3);
     });
 
@@ -282,7 +248,7 @@ describe("LinkedList", () => {
       LL.push([3, 4, 5]);
       LL.push([4, 5, 6]);
 
-      expect(LL.removeElement([3, 4, 5])).toEqual(2);
+      expect(LL.removeElementByElement([3, 4, 5])).toEqual(2);
       expect(LL.size).toEqual(3);
     });
 
@@ -294,7 +260,7 @@ describe("LinkedList", () => {
       LL.push({ first: "Tristan", last: "Timblin"});
       LL.push({ first: "Jeremy", last: "Timblin"});
 
-      expect(LL.removeElement({ first: "Tristan", last: "Timblin"})).toEqual(2);
+      expect(LL.removeElementByElement({ first: "Tristan", last: "Timblin"})).toEqual(2);
       expect(LL.size).toEqual(3);
     });
 
@@ -306,7 +272,7 @@ describe("LinkedList", () => {
       LL.push({ name: "Mountain View", industry: ["technology"], distance: { "San Francisco": 39.3 }});
       LL.push({ name: "Sausalito", distance: { "Mountain View": 49.7 }});
 
-      expect(LL.removeElement({ name: "San Francsico", industry: ["technology"], distance: { "San Jose": 48.5 }})).toEqual(0);
+      expect(LL.removeElementByElement({ name: "San Francsico", industry: ["technology"], distance: { "San Jose": 48.5 }})).toEqual(0);
       expect(LL.size).toEqual(3);
     });
 
@@ -317,7 +283,7 @@ describe("LinkedList", () => {
       LL.push(2);
       LL.push(3);
 
-      expect(LL.removeElement(3)).toEqual(2);
+      expect(LL.removeElementByElement(3)).toEqual(2);
       expect(LL.size).toEqual(2);
     });
 
@@ -328,20 +294,20 @@ describe("LinkedList", () => {
       LL.push(2);
       LL.push(3);
 
-      expect(LL.removeElement(0)).toEqual(-1);
-      expect(LL.removeElement(4)).toEqual(-1);
+      expect(LL.removeElementByElement(0)).toEqual(-1);
+      expect(LL.removeElementByElement(4)).toEqual(-1);
     });
   });
 
-  describe("indexOf()" , () => {
+  describe("getIndexByElement()" , () => {
     it("gets the index of the head of a linked list", () => {
       const LL = new LinkedList<number>();
 
-      expect(LL.indexOf(1)).toEqual(-1);
+      expect(LL.getIndexByElement(1)).toEqual(-1);
 
       LL.push(1);
 
-      expect(LL.indexOf(1)).toEqual(0);
+      expect(LL.getIndexByElement(1)).toEqual(0);
     });
 
     it("gets the index of a middle node in a linked list", () => {
@@ -351,7 +317,7 @@ describe("LinkedList", () => {
       LL.push(2);
       LL.push(3);
 
-      expect(LL.indexOf(2)).toEqual(1);
+      expect(LL.getIndexByElement(2)).toEqual(1);
     });
 
     it("gets the index of the tail of a linked list", () => {
@@ -361,7 +327,7 @@ describe("LinkedList", () => {
       LL.push(2);
       LL.push(3);
 
-      expect(LL.indexOf(3)).toEqual(2);
+      expect(LL.getIndexByElement(3)).toEqual(2);
     });
 
     it("returns -1 when the element is not found", () => {
@@ -371,7 +337,41 @@ describe("LinkedList", () => {
       LL.push(3);
       LL.push(5);
 
-      expect(LL.indexOf(2)).toEqual(-1);
+      expect(LL.getIndexByElement(2)).toEqual(-1);
+    });
+  });
+
+  describe("toArray()", () => {
+    it("returns complete linked list as a list of elements", () => {
+      const LL = new LinkedList<string>();
+
+      LL.push("My first node");
+      LL.push("My second node");
+      LL.push("My third node");
+
+      expect(LL.toArray()).toEqual(["My first node", "My second node", "My third node"]);
+    });
+
+    it("returns partial linked list as a list of elements", () => {
+      const LL = new LinkedList<string>();
+
+      LL.push("My first node");
+      LL.push("My second node");
+      LL.push("My third node");
+      LL.push("My fourth node");
+      LL.push("My fifth node");
+
+      expect(LL.toArray(1, 3)).toEqual(["My second node", "My third node", "My fourth node"]);
+    });
+
+    it("returns partial linked list as a list of elements with range overload", () => {
+      const LL = new LinkedList<string>();
+
+      LL.push("My first node");
+      LL.push("My second node");
+      LL.push("My third node");
+
+      expect(LL.toArray(1, 5)).toEqual(["My second node", "My third node"]);
     });
   });
 })

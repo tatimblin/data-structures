@@ -1,32 +1,45 @@
 # Linked List
 
+## Properties
+
+### size
+
+Returns the number of nodes present in the linked list.
 
 ## Methods
 
-### push(element: any): void
+### push(element: T): void
 
 Adds an element to the tail of the linked list.
 
-### pop(): any
+### pop(): T
 
 Removes and returns the element at the tail of the linked list.
 
-### insertAt(element: any, index: number)
+### has(element: T): boolean
+
+Returns true if an element exists in the linked list.
+
+### insertElementAtIndex(element: T, index: number): boolean
 
 Adds an element at a specific index.
 
-### getFrom(index: number): any
+### getElementByIndex(index: number): T
 
-Returns the element at the provided index.
+Returns the element at the given index in the linked list.
 
-### removeFrom(index: number): any
+### getIndexByElement(element: T): number
 
-Removes a node from the list and returns its element.
+Returns the index of the element in the linked list (-1 if not present).
 
-### removeElement(element: any): element
+### removeElementByIndex(index: number): <element, number>
 
-Find and removes a specific element.
+Removes an element at a specific index.
 
-### indexOf(element: any): number
+### removeElementByElement(element: T): <element, number>
 
-Return the index of a specific element.
+Find and removes a specific element if present (-1 if not present).
+
+### toArray(start: number, end: number): T[]
+
+Returns the linked-list as an array, can optionally accept a range.

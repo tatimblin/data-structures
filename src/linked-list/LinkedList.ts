@@ -30,7 +30,7 @@ export class LinkedList<T> {
       pointer = pointer.next;
     }
 
-    node.prev = pointer; // || this.#head;
+    node.prev = pointer;
     pointer.next = node;
     this.#size += 1;
   }
@@ -64,26 +64,36 @@ export class LinkedList<T> {
   }
 
   /**
-   * Adds an element at a specific index.
+   * Returns true if an element exists in the linked list.
    */
-  insertAt(element: T, index: number): void {
+  has(element: T): boolean {
+    if (this.getIndexByElement(element) >= 0) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Adds an element at a specific index
+   * @param element {T}
+   * @param index {number}
+   */
+  insertElementAtIndex(element: T, index: number) {
     this.#validateIndex(index, true);
 
     const node = new Node(element);
-
-    let pointer: Node<T> | null = this.#head;
+    let pointer = this.#head;
 
     for (let i = 0; i < index; i++) {
-      if (!pointer) throw new Error(`Missing node in position ${i}`);
+      if (!pointer.next) {
+        throw new Error(`Missing node in position ${i}`);
+      }
       pointer = pointer.next;
     }
 
-    if (!pointer) throw new Error(`Missing node in position ${index}`);
-
     node.next = pointer.next;
-    if (pointer) {
-      pointer.next = node;
-    }
+    pointer.next = node;
     this.#size += 1;
   }
 
@@ -92,9 +102,11 @@ export class LinkedList<T> {
    * @param index - the index to 
    * @returns {T} an element in the linked list
    */
-  getFrom(index: number): T | null {
+  getElementByIndex(index: number): T | null {
     this.#validateIndex(index);
-    if (index === 0) return this.#head.next && this.#head.next.element;
+    if (index === 0) {
+      return this.#head.next && this.#head.next.element;
+    }
 
     let pointer: Node<T> | null = this.#head;
 
@@ -109,40 +121,30 @@ export class LinkedList<T> {
   }
 
   /**
-   * Gets all elements from the linked list at a specified range
-   * @param start - the starting index
-   * @param end - the ending index
-   * @returns {[]T} a list of elements in the linked list
+   * Gets the index of a specific element in the linked list (-1 if not present)
+   * @param element {T} - the element
+   * @returns {number}
    */
-  getFromRange(start = 0, end = this.#size): T[] {
-    const list: T[] = [];
-
-    let pointer: Node<T> = this.#head;
+  getIndexByElement(element: T): number {
+    let pointer: Node<T> | null = this.#head.next;
     let index = 0;
-    while(pointer.next) {
+
+    while (pointer) {
+      if (pointer.element && deepEquals(pointer.element, element)) {
+        return index;
+      }
+
       pointer = pointer.next;
-      if (!pointer || !pointer.element) {
-        break;
-      }
-
-      if (index >= start) {
-        list.push(pointer.element);
-      }
-
-      if (index >= end) {
-        break;
-      }
-
       index += 1;
     }
 
-    return list;
+    return -1;
   }
 
   /**
    * Given an index it removes a node from the list and returns its element.
    */
-  removeFrom(index: number): T | null {
+  removeElementByIndex(index: number): T | null {
     this.#validateIndex(index);
 
     let pointer: Node<T> = this.#head;
@@ -173,7 +175,7 @@ export class LinkedList<T> {
   /**
    * Given an element it removes a node from the list and returns its index.
    */
-  removeElement(element: T): number {
+  removeElementByElement(element: T): number {
     let pointer: Node<T> | null = this.#head.next;
     let index = 0;
 
@@ -198,22 +200,34 @@ export class LinkedList<T> {
   }
 
   /**
-   * Given an element it returns that nodes index.
+   * Gets all elements from the linked list at a specified range
+   * @param start - the starting index
+   * @param end - the ending index
+   * @returns {[]T} a list of elements in the linked list
    */
-  indexOf(element: T): number {
-    let pointer: Node<T> | null = this.#head.next;
-    let index = 0;
+  toArray(start = 0, end = this.#size): T[] {
+    const list: T[] = [];
 
-    while (pointer) {
-      if (pointer.element && deepEquals(pointer.element, element)) {
-        return index;
+    let pointer: Node<T> = this.#head;
+    let index = 0;
+    while(pointer.next) {
+      pointer = pointer.next;
+      if (!pointer || !pointer.element) {
+        break;
       }
 
-      pointer = pointer.next;
+      if (index >= start) {
+        list.push(pointer.element);
+      }
+
+      if (index >= end) {
+        break;
+      }
+
       index += 1;
     }
 
-    return -1;
+    return list;
   }
 
   /**
