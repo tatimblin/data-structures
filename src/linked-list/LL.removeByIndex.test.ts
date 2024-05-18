@@ -1,12 +1,12 @@
 import { LinkedList } from "./LinkedList.js";
 
-describe("removeElementByIndex()" , () => {
+describe("removeByIndex()" , () => {
   it("removes the head of a linked list with a single node", () => {
     const LL = new LinkedList<number>();
 
     LL.push(1);
 
-    expect(LL.removeElementByIndex(0)).toEqual(1);
+    expect(LL.removeByIndex(0)).toEqual(1);
     expect(LL.size).toEqual(0);
   });
 
@@ -17,7 +17,7 @@ describe("removeElementByIndex()" , () => {
     LL.push(2);
     LL.push(3);
 
-    expect(LL.removeElementByIndex(0)).toEqual(1);
+    expect(LL.removeByIndex(0)).toEqual(1);
     expect(LL.size).toEqual(2);
   });
 
@@ -29,7 +29,7 @@ describe("removeElementByIndex()" , () => {
     LL.push(3);
     LL.push(4);
 
-    expect(LL.removeElementByIndex(2)).toEqual(3);
+    expect(LL.removeByIndex(2)).toEqual(3);
     expect(LL.size).toEqual(3);
   });
 
@@ -40,7 +40,7 @@ describe("removeElementByIndex()" , () => {
     LL.push(2);
     LL.push(3);
 
-    expect(LL.removeElementByIndex(2)).toEqual(3);
+    expect(LL.removeByIndex(2)).toEqual(3);
     expect(LL.size).toEqual(2);
   });
 
@@ -51,8 +51,8 @@ describe("removeElementByIndex()" , () => {
     LL.push(2);
     LL.push(3);
 
-    expect(LL.removeElementByIndex(0)).toEqual(1);
-    expect(LL.removeElementByIndex(1)).toEqual(3);
+    expect(LL.removeByIndex(0)).toEqual(1);
+    expect(LL.removeByIndex(1)).toEqual(3);
     expect(LL.size).toEqual(1);
   });
 
@@ -63,8 +63,8 @@ describe("removeElementByIndex()" , () => {
     LL.push(2);
     LL.push(3);
 
-    expect(LL.removeElementByIndex(1)).toEqual(2);
-    expect(LL.removeElementByIndex(1)).toEqual(3);
+    expect(LL.removeByIndex(1)).toEqual(2);
+    expect(LL.removeByIndex(1)).toEqual(3);
     expect(LL.size).toEqual(1);
   });
 
@@ -75,7 +75,7 @@ describe("removeElementByIndex()" , () => {
     LL.push(2);
     LL.push(3);
 
-    expect(() => LL.removeElementByIndex(-1)).toThrow("Index is out of bounds");
-    expect(() => LL.removeElementByIndex(3)).toThrow("Index is out of bounds");
+    expect(() => LL.removeByIndex(-1)).toThrow("Index is out of bounds");
+    expect(() => LL.removeByIndex(3)).toThrow("Index is out of bounds");
   });
 });

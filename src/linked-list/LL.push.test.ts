@@ -6,7 +6,7 @@ describe("LinkedList.push()", () => {
 
     LL.push("My first node");
 
-    expect(LL.getElementByIndex(0)).toEqual("My first node");
+    expect(LL.getByIndex(0)).toEqual("My first node");
     expect(LL.size).toEqual(1);
   });
 

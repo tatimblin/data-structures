@@ -67,11 +67,8 @@ export class LinkedList<T> {
    * Returns true if an element exists in the linked list.
    */
   has(element: T): boolean {
-    if (this.getIndexByElement(element) >= 0) {
-      return true;
-    }
-
-    return false;
+    const [_, index] = this.getByElement(element);
+    return index >= 0;
   }
 
   /**
@@ -79,7 +76,7 @@ export class LinkedList<T> {
    * @param element {T}
    * @param index {number}
    */
-  insertElementAtIndex(element: T, index: number) {
+  insertAt(element: T, index: number) {
     this.#validateIndex(index, true);
 
     const node = new Node(element);
@@ -100,51 +97,58 @@ export class LinkedList<T> {
   /**
    * Gets an element from the linked list at a specified index
    * @param index - the index to 
-   * @returns {T} an element in the linked list
+   * @returns {[T, number]} an element in the linked list
    */
-  getElementByIndex(index: number): T | null {
+  getByIndex(index: number): [T | null, number] {
     this.#validateIndex(index);
     if (index === 0) {
-      return this.#head.next && this.#head.next.element;
+      if (this.#head.next && this.#head.next.element) {
+        return [this.#head.next.element, index];
+      }
+      return [null, -1];
     }
 
     let pointer: Node<T> | null = this.#head;
 
     for (let i = 0; i <= index; i++) {
-      if (!pointer) throw new Error(`Missing node in position ${i}`);
+      if (!pointer) {
+        throw new Error(`Missing node in position ${i}`);
+      }
       pointer = pointer.next;
     }
 
-    if (!pointer) throw new Error(`Missing node in position ${index}`);
+    if (!pointer) {
+      throw new Error(`Missing node in position ${index}`);
+    }
 
-    return pointer.element;
+    return [pointer.element, index];
   }
 
   /**
    * Gets the index of a specific element in the linked list (-1 if not present)
    * @param element {T} - the element
-   * @returns {number}
+   * @returns {[T | null, number]}
    */
-  getIndexByElement(element: T): number {
+  getByElement(element: T): [T | null, number] {
     let pointer: Node<T> | null = this.#head.next;
     let index = 0;
 
     while (pointer) {
       if (pointer.element && deepEquals(pointer.element, element)) {
-        return index;
+        return [pointer.element, index];
       }
 
       pointer = pointer.next;
       index += 1;
     }
 
-    return -1;
+    return [null, -1];
   }
 
   /**
    * Given an index it removes a node from the list and returns its element.
    */
-  removeElementByIndex(index: number): T | null {
+  removeByIndex(index: number): [T | null, number] {
     this.#validateIndex(index);
 
     let pointer: Node<T> = this.#head;
@@ -169,13 +173,13 @@ export class LinkedList<T> {
 
     this.#size -= 1;
 
-    return temp;
+    return [temp, index];
   }
 
   /**
    * Given an element it removes a node from the list and returns its index.
    */
-  removeElementByElement(element: T): number {
+  removeByElement(element: T): [T | null, number] {
     let pointer: Node<T> | null = this.#head.next;
     let index = 0;
 
@@ -189,14 +193,14 @@ export class LinkedList<T> {
         }
         this.#size -= 1;
 
-        return index;
+        return [pointer.element, index];
       }
 
       pointer = pointer.next;
       index += 1;
     }
 
-    return -1;
+    return [null, -1];
   }
 
   /**

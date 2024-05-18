@@ -20,23 +20,23 @@ Removes and returns the element at the tail of the linked list.
 
 Returns true if an element exists in the linked list.
 
-### insertElementAtIndex(element: T, index: number): boolean
+### insertAt(element: T, index: number): boolean
 
 Adds an element at a specific index.
 
-### getElementByIndex(index: number): T
+### getByIndex(index: number): T
 
 Returns the element at the given index in the linked list.
 
-### getIndexByElement(element: T): number
+### getByElement(element: T): number
 
 Returns the index of the element in the linked list (-1 if not present).
 
-### removeElementByIndex(index: number): <element, number>
+### removeByIndex(index: number): <element, number>
 
 Removes an element at a specific index.
 
-### removeElementByElement(element: T): <element, number>
+### removeByElement(element: T): <element, number>
 
 Find and removes a specific element if present (-1 if not present).
 

@@ -18,7 +18,7 @@ describe("LinkedList.pop()" , () => {
     LL.pop();
 
     expect(LL.size).toEqual(1);
-    expect(() => LL.getElementByIndex(1)).toThrow("Index is out of bounds");
+    expect(() => LL.getByIndex(1)).toThrow("Index is out of bounds");
   });
 
   it("removes tail node of a large linked list", () => {
@@ -34,6 +34,6 @@ describe("LinkedList.pop()" , () => {
 
     expect(LL.pop()).toEqual("My seventh node");
     expect(LL.size).toEqual(6);
-    expect(() => LL.getElementByIndex(6)).toThrow("Index is out of bounds");
+    expect(() => LL.getByIndex(6)).toThrow("Index is out of bounds");
   });
 });

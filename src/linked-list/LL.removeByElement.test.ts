@@ -1,12 +1,12 @@
 import { LinkedList } from "./LinkedList.js";
 
-describe("LinkedList.removeElementByElement()" , () => {
+describe("LinkedList.removeByElement()" , () => {
   it("removes the head of a linked list with a single node", () => {
     const LL = new LinkedList<number>();
 
     LL.push(1);
 
-    expect(LL.removeElementByElement(1)).toEqual(0);
+    expect(LL.removeByElement(1)).toEqual(0);
     expect(LL.size).toEqual(0);
   });
 
@@ -17,7 +17,7 @@ describe("LinkedList.removeElementByElement()" , () => {
     LL.push(2);
     LL.push(3);
 
-    expect(LL.removeElementByElement(1)).toEqual(0);
+    expect(LL.removeByElement(1)).toEqual(0);
     expect(LL.size).toEqual(2);
   });
 
@@ -29,7 +29,7 @@ describe("LinkedList.removeElementByElement()" , () => {
     LL.push(3);
     LL.push(4);
 
-    expect(LL.removeElementByElement(3)).toEqual(2);
+    expect(LL.removeByElement(3)).toEqual(2);
     expect(LL.size).toEqual(3);
   });
 
@@ -41,7 +41,7 @@ describe("LinkedList.removeElementByElement()" , () => {
     LL.push([3, 4, 5]);
     LL.push([4, 5, 6]);
 
-    expect(LL.removeElementByElement([3, 4, 5])).toEqual(2);
+    expect(LL.removeByElement([3, 4, 5])).toEqual(2);
     expect(LL.size).toEqual(3);
   });
 
@@ -53,7 +53,7 @@ describe("LinkedList.removeElementByElement()" , () => {
     LL.push({ first: "Tristan", last: "Timblin"});
     LL.push({ first: "Jeremy", last: "Timblin"});
 
-    expect(LL.removeElementByElement({ first: "Tristan", last: "Timblin"})).toEqual(2);
+    expect(LL.removeByElement({ first: "Tristan", last: "Timblin"})).toEqual(2);
     expect(LL.size).toEqual(3);
   });
 
@@ -65,7 +65,7 @@ describe("LinkedList.removeElementByElement()" , () => {
     LL.push({ name: "Mountain View", industry: ["technology"], distance: { "San Francisco": 39.3 }});
     LL.push({ name: "Sausalito", distance: { "Mountain View": 49.7 }});
 
-    expect(LL.removeElementByElement({ name: "San Francsico", industry: ["technology"], distance: { "San Jose": 48.5 }})).toEqual(0);
+    expect(LL.removeByElement({ name: "San Francsico", industry: ["technology"], distance: { "San Jose": 48.5 }})).toEqual(0);
     expect(LL.size).toEqual(3);
   });
 
@@ -76,7 +76,7 @@ describe("LinkedList.removeElementByElement()" , () => {
     LL.push(2);
     LL.push(3);
 
-    expect(LL.removeElementByElement(3)).toEqual(2);
+    expect(LL.removeByElement(3)).toEqual(2);
     expect(LL.size).toEqual(2);
   });
 
@@ -87,7 +87,7 @@ describe("LinkedList.removeElementByElement()" , () => {
     LL.push(2);
     LL.push(3);
 
-    expect(LL.removeElementByElement(0)).toEqual(-1);
-    expect(LL.removeElementByElement(4)).toEqual(-1);
+    expect(LL.removeByElement(0)).toEqual(-1);
+    expect(LL.removeByElement(4)).toEqual(-1);
   });
 });
