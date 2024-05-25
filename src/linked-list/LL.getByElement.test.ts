@@ -1,14 +1,11 @@
+import * as path from 'path';
+import * as fs from 'fs';
 import { LinkedList } from "./LinkedList.js";
+import type { User } from "./__fixtures__/types.js";
 
-type User = {
-  first: string,
-  last: string,
-};
-
-const users: User[] = [
-  { first: "Ana", last: "Tudor" },
-  { first: "Alan", last: "Turing" },
-];
+const dataPath = path.resolve(__dirname, "__fixtures__", "data.json");
+const rawData = fs.readFileSync(dataPath, "utf8");
+const { users }: { users: User[] } = JSON.parse(rawData);
 
 describe("LinkedList.getByElement()" , () => {
   it("gets the index of the head of a linked list", () => {
@@ -67,5 +64,19 @@ describe("LinkedList.getByElement()" , () => {
     LL.push(users[1]);
 
     expect(LL.getByElement(users[1])).toEqual([users[1], 1]);
+  });
+
+  it("finds a match for a complex data type, using a custom matcher", () => {
+    const LL = new LinkedList<User, string>();
+
+    LL.push(users[0]);
+    LL.push(users[1]);
+    LL.push(users[1]);
+
+    expect(
+      LL
+        .withMatcher((user) => user.first)
+        .getByElement("Alan")
+    ).toEqual([users[1], 1]);
   });
 });

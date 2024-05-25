@@ -6,7 +6,7 @@ describe("removeByIndex()" , () => {
 
     LL.push(1);
 
-    expect(LL.removeByIndex(0)).toEqual(1);
+    expect(LL.removeByIndex(0)).toEqual([1, 0]);
     expect(LL.size).toEqual(0);
   });
 
@@ -17,7 +17,7 @@ describe("removeByIndex()" , () => {
     LL.push(2);
     LL.push(3);
 
-    expect(LL.removeByIndex(0)).toEqual(1);
+    expect(LL.removeByIndex(0)).toEqual([1, 0]);
     expect(LL.size).toEqual(2);
   });
 
@@ -29,7 +29,7 @@ describe("removeByIndex()" , () => {
     LL.push(3);
     LL.push(4);
 
-    expect(LL.removeByIndex(2)).toEqual(3);
+    expect(LL.removeByIndex(2)).toEqual([3, 2]);
     expect(LL.size).toEqual(3);
   });
 
@@ -40,7 +40,7 @@ describe("removeByIndex()" , () => {
     LL.push(2);
     LL.push(3);
 
-    expect(LL.removeByIndex(2)).toEqual(3);
+    expect(LL.removeByIndex(2)).toEqual([3, 2]);
     expect(LL.size).toEqual(2);
   });
 
@@ -51,8 +51,8 @@ describe("removeByIndex()" , () => {
     LL.push(2);
     LL.push(3);
 
-    expect(LL.removeByIndex(0)).toEqual(1);
-    expect(LL.removeByIndex(1)).toEqual(3);
+    expect(LL.removeByIndex(0)).toEqual([1, 0]);
+    expect(LL.removeByIndex(1)).toEqual([3, 1]);
     expect(LL.size).toEqual(1);
   });
 
@@ -63,8 +63,8 @@ describe("removeByIndex()" , () => {
     LL.push(2);
     LL.push(3);
 
-    expect(LL.removeByIndex(1)).toEqual(2);
-    expect(LL.removeByIndex(1)).toEqual(3);
+    expect(LL.removeByIndex(1)).toEqual([2, 1]);
+    expect(LL.removeByIndex(1)).toEqual([3, 1]);
     expect(LL.size).toEqual(1);
   });
 

@@ -1,0 +1,12 @@
+{
+  "users": [
+    { "first": "Ana", "last": "Tudor" },
+    { "first": "Alan", "last": "Turing" }
+  ],
+  "cities": [
+    { "name": "San Francsico", "industry": ["technology"], "distance": { "San Jose": 48.5 }},
+    { "name": "San Jose", "industry": ["manufacturing"], "distance": { "Sausalito": 62.1}},
+    { "name": "Mountain View", "industry": ["technology"], "distance": { "San Francisco": 39.3 }},
+    { "name": "Sausalito", "distance": { "Mountain View": 49.7 }}
+  ]
+}

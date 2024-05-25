@@ -1,13 +1,20 @@
 import { Node } from "./Node.js";
 import { deepEquals } from "../utils/index.js";
 
-export class LinkedList<T> {
-  #head: Node<T>;
+export class LinkedList<Value, Key = Value> {
+  #head: Node<Value>;
   #size: number;
+  #matcher: (element: Value) => Key
 
   constructor() {
     this.#head = new Node();
     this.#size = 0;
+    this.#matcher = (element: Value) => element as unknown as Key;
+  }
+
+  withMatcher(matcher: (element: Value) => Key): this {
+    this.#matcher = matcher;
+    return this;
   }
 
   /**
@@ -21,7 +28,7 @@ export class LinkedList<T> {
    * Adds an element at the tail of the linked list
    * @param element - the element to add
    */
-  push(element: T): void {
+  push(element: Value): void {
     const node = new Node(element);
 
     let pointer = this.#head;
@@ -38,7 +45,7 @@ export class LinkedList<T> {
   /**
    * Removes and returns the element at the tail of the linked list.
    */
-  pop(): T | null {
+  pop(): Value | null {
     if (this.#size === 0) {
       return null;
     }
@@ -66,7 +73,7 @@ export class LinkedList<T> {
   /**
    * Returns true if an element exists in the linked list.
    */
-  has(element: T): boolean {
+  has(element: Key): boolean {
     const [_, index] = this.getByElement(element);
     return index >= 0;
   }
@@ -76,7 +83,7 @@ export class LinkedList<T> {
    * @param element {T}
    * @param index {number}
    */
-  insertAt(element: T, index: number) {
+  insertAt(element: Value, index: number) {
     this.#validateIndex(index, true);
 
     const node = new Node(element);
@@ -99,7 +106,7 @@ export class LinkedList<T> {
    * @param index - the index to 
    * @returns {[T, number]} an element in the linked list
    */
-  getByIndex(index: number): [T | null, number] {
+  getByIndex(index: number): [Value | null, number] {
     this.#validateIndex(index);
     if (index === 0) {
       if (this.#head.next && this.#head.next.element) {
@@ -108,7 +115,7 @@ export class LinkedList<T> {
       return [null, -1];
     }
 
-    let pointer: Node<T> | null = this.#head;
+    let pointer: Node<Value> | null = this.#head;
 
     for (let i = 0; i <= index; i++) {
       if (!pointer) {
@@ -127,14 +134,14 @@ export class LinkedList<T> {
   /**
    * Gets the index of a specific element in the linked list (-1 if not present)
    * @param element {T} - the element
-   * @returns {[T | null, number]}
+   * @returns {[Value | null, number]}
    */
-  getByElement(element: T): [T | null, number] {
-    let pointer: Node<T> | null = this.#head.next;
+  getByElement(element: Key): [Value | null, number] {
+    let pointer: Node<Value> | null = this.#head.next;
     let index = 0;
 
     while (pointer) {
-      if (pointer.element && deepEquals(pointer.element, element)) {
+      if (pointer.element && this.#compare(element, pointer.element)) {
         return [pointer.element, index];
       }
 
@@ -148,10 +155,10 @@ export class LinkedList<T> {
   /**
    * Given an index it removes a node from the list and returns its element.
    */
-  removeByIndex(index: number): [T | null, number] {
+  removeByIndex(index: number): [Value | null, number] {
     this.#validateIndex(index);
 
-    let pointer: Node<T> = this.#head;
+    let pointer: Node<Value> = this.#head;
 
     // -1 to account for virtual head
     for (let i = -1; i < index; i++) {
@@ -179,12 +186,12 @@ export class LinkedList<T> {
   /**
    * Given an element it removes a node from the list and returns its index.
    */
-  removeByElement(element: T): [T | null, number] {
-    let pointer: Node<T> | null = this.#head.next;
+  removeByElement(element: Key): [Value | null, number] {
+    let pointer: Node<Value> | null = this.#head.next;
     let index = 0;
 
     while (pointer) {
-      if (pointer.element && deepEquals(pointer.element, element)) {
+      if (pointer.element && this.#compare(element, pointer.element)) {
         if (pointer.next) {
           pointer.next.prev = pointer.prev;
         }
@@ -209,10 +216,10 @@ export class LinkedList<T> {
    * @param end - the ending index
    * @returns {[]T} a list of elements in the linked list
    */
-  toArray(start = 0, end = this.#size): T[] {
-    const list: T[] = [];
+  toArray(start = 0, end = this.#size): Value[] {
+    const list: Value[] = [];
 
-    let pointer: Node<T> = this.#head;
+    let pointer: Node<Value> = this.#head;
     let index = 0;
     while(pointer.next) {
       pointer = pointer.next;
@@ -242,5 +249,9 @@ export class LinkedList<T> {
     if (index < 0 || index > size) {
       throw new Error("Index is out of bounds");
     }
+  }
+
+  #compare(key: Key, element: Value) {
+    return deepEquals(key, this.#matcher(element));
   }
 }

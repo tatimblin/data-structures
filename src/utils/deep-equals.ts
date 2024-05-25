@@ -1,4 +1,4 @@
-export function deepEquals(a: unknown, b: unknown): boolean {
+export function deepEquals<T>(a: T, b: T): boolean {
 
   if (Array.isArray(a) && Array.isArray(b) && a.length === b.length) {
     for (let i = 0; i < a.length; i++) {

@@ -6,7 +6,7 @@ describe("insertAt()" , () => {
 
     LL.insertAt("My first node", 0);
 
-    expect(LL.getByIndex(0)).toEqual("My first node");
+    expect(LL.getByIndex(0)).toEqual(["My first node", 0]);
   });
 
   it("inserts a node at the middle of a populated linked list", () => {
@@ -16,7 +16,7 @@ describe("insertAt()" , () => {
     LL.push("My third node");
     LL.insertAt("My second node", 1);
 
-    expect(LL.getByIndex(1)).toEqual("My second node");
+    expect(LL.getByIndex(1)).toEqual(["My second node", 1]);
   });
 
   it("inserts a node at the head of a populated linked list", () => {
@@ -26,9 +26,9 @@ describe("insertAt()" , () => {
     LL.push("My third node");
     LL.insertAt("My first node", 0);
 
-    expect(LL.getByIndex(0)).toEqual("My first node");
-    expect(LL.getByIndex(1)).toEqual("My second node");
-    expect(LL.getByIndex(2)).toEqual("My third node");
+    expect(LL.getByIndex(0)).toEqual(["My first node", 0]);
+    expect(LL.getByIndex(1)).toEqual(["My second node", 1]);
+    expect(LL.getByIndex(2)).toEqual(["My third node", 2]);
   });
 
   it("inserts a node at the tail of a populated linked list", () => {
@@ -38,6 +38,6 @@ describe("insertAt()" , () => {
     LL.push("My second node");
     LL.insertAt("My third node", 2);
 
-    expect(LL.getByIndex(2)).toEqual("My third node");
+    expect(LL.getByIndex(2)).toEqual(["My third node", 2]);
   });
 });
