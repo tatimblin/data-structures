@@ -5,35 +5,49 @@ An implementation of a `LinkedList` that has a set size and adds new nodes or mo
 ## Usage
 
 ```
-new LeastRecentlyUsed<T>(size: number);
+new LeastRecentlyUsed<Value, Key?>(size: number);
 ```
+
+## Properties
+
+### size
+
+The number of items in the cache.
 
 ## Methods
 
-### push(element: T): void
+### withLimit(limit: number): this
 
-Adds a new element or moves an existing element to the head of the cache.
+Update the limit of an existing cache.
 
-### shift(): T
+### get(key: Key): Value
 
-Remove and return the head of the cache.
+Get the element for a particular node and move it to the head of the cache.
 
-### list(): T[]
+### post(value: Value): void
+
+Adds an element to the head of the cache, removes duplicate.
+
+### put(value: Value, key?: Key): void
+
+Updates a value in the cache in-place if found, otherwise adds to the head of the cache.
+
+### delete(key: Key): Value
+
+Removes an element from the cache.
+
+### pop(): Value
+
+Removes and returns the head of the cache.
+
+### has(key: Key): boolean
+
+Returns true if element exists in cache.
+
+### toArray(): Value[]
 
 Return an array of each element in the cache.
 
 ### clear(): void
 
 Remove all nodes in cache.
-
-### removeFrom(index: number): T | null
-
-Removes an element from the cache, and returns the element.
-
-### removeElement(element: T): number
-
-Removes whatever element is at a particular index, and returns the index.
-
-### indexOf(): number
-
-Returns the index of an element in the cache.

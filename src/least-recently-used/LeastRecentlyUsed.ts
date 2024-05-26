@@ -1,79 +1,97 @@
 import { LinkedList } from "../index.js";
 
-export class LeastRecentlyUsed<T> {
-    #linkedList: LinkedList<T>;
-    #maxSize: number;
+export class LeastRecentlyUsed<Value, Key = Value> {
+    #linkedList: LinkedList<Value, Key>;
+    #limit: number;
 
-    constructor(maxSize: number) {
-        this.#linkedList = new LinkedList<T>();
-        this.#maxSize = maxSize;
+    constructor(limit: number) {
+        this.#linkedList = new LinkedList<Value, Key>();
+        this.#limit = limit;
     }
 
     /**
-     * Adds a new element or moves an existing element to the head of the cache.
-     * @param element - data to add
-     * @returns 
+     * The number of items in the cache.
      */
-    push(element: T): void {
-        this.#linkedList.removeElement(element);
-        this.#linkedList.insertAt(element, 0);
-
-        if (this.#linkedList.size > this.#maxSize) {
-            this.#linkedList.pop();
-        }
-    }
-
-    /**
-     * Removes and returns the element at the head of the cache.
-     * @returns element at the head of the cache
-     */
-    shift(): T | null {
-        return this.#linkedList.removeFrom(0);
-    }
-
-    list() {
-        return this.#linkedList.getFromRange();
-    }
-
-    /**
-     * Clears the cache.
-     */
-    clear() {
-        this.#linkedList = new LinkedList<T>();
-    }
-
-    /**
-     * Removes and returns the element at a particular index in the cache.
-     * @param index - the index of the element to remove
-     * @returns {T} element at index in cache
-     */
-    removeFrom(index: number): T | null {
-        return this.#linkedList.removeFrom(index);
-    }
-
-    /**
-     * Removes an element from the cache, and returns the index it was removed at.
-     * @param element - the element to remove
-     * @returns {number} index of element removed
-     */
-    removeElement(element: T): number {
-        return this.#linkedList.removeElement(element);
-    }
-
-    /**
-     * Returns the index in the linked list an element is found at
-     * @param element 
-     * @returns {number}
-     */
-    indexOf(element: T) {
-        return this.#linkedList.indexOf(element);
-    }
-
-    /**
-     * Get the size of the cache.
-     * @returns {number} size of the cache
-     */
-    get size() {
+    get size(): number {
         return this.#linkedList.size;
+    }
+
+    /**
+     * The maximum size the cache can be.
+     */
+    get limit(): number {
+        return this.#limit;
+    }
+
+    /**
+     * Update the limit of an existing cache.
+     * @param limit - max number of elements.
+     * @returns this
+     */
+    withLimit(limit: number) {
+        this.#limit = limit;
+        return this;
+    }
+
+    /**
+     * Get the element for a particular node and move it to the head of the cache.
+     * @param key - some piece of data to match.
+     */
+    get(key: Key): Value {
+        throw new Error("not yet implemented");
+    }
+
+    /**
+     * Adds an element to the head of the cache, removes duplicate.
+     * @param value - data to add.
+     */
+    post(value: Value): void {
+        throw new Error("not yet implemented");
+    }
+    
+    /**
+     * Updates a value in the cache in-place if found, otherwise adds to the head of the cache.
+     * @param value - data to update.
+     * @param key - explicitly provide the key.
+     */
+    put(value: Value, key?: Key) {
+        throw new Error("not yet implemented");
+    }
+
+    /**
+     * Removes an element from the cache.
+     * @param key - some piece of data to match.
+     */
+    delete(key: Key): Value {
+        throw new Error("not yet implemented");
+    }
+
+    /**
+     * Removes and returns the head of the cache.
+     */
+    pop(): Value {
+        throw new Error("not yet implemented");
+    }
+
+    /**
+     * Returns true if element exists in cache, without moving it to the head of the cache.
+     * @param key - some piece of data to match.
+     */
+    has(key: Key): boolean {
+        throw new Error("not yet implemented");
+    }
+
+    /**
+     * Return an array of each element in the cache.
+     */
+    toArray(): Value[] {
+        throw new Error("not yet implemented");
+    }
+
+    /**
+     * Remove all nodes in cache.
+     */
+    clear(): void {
+        throw new Error("not yet implemented");
     }
 }
