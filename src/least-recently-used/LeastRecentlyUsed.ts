@@ -1,15 +1,15 @@
 import { LinkedList, Node } from "../index.js";
 
-type CacheEntry<K, V> = { key: K; value: V };
+type CacheRef<K, V> = { value: V; node: Node<K> };
 
 export class LeastRecentlyUsed<Value, Key = Value> {
-    #references: Map<Key, Node<CacheEntry<Key, Value>>>;
-    #linkedList: LinkedList<CacheEntry<Key, Value>, "node">;
+    #references: Map<Key, CacheRef<Key, Value>>;
+    #linkedList: LinkedList<Key, "node">;
     #limit: number;
 
     constructor(limit: number) {
         this.#references = new Map();
-        this.#linkedList = LinkedList.nodes<CacheEntry<Key, Value>>();
+        this.#linkedList = LinkedList.nodes<Key>();
         this.#limit = limit;
     }
 
@@ -40,16 +40,16 @@ export class LeastRecentlyUsed<Value, Key = Value> {
      * @param key - some piece of data to match.
      */
     get(key: Key): Value {
-        const node = this.#references.get(key);
-        if (!node?.element) {
+        const ref = this.#references.get(key);
+        if (!ref) {
             throw new Error(`${key} was not found in cache`);
         }
 
-        this.#linkedList.removeNode(node);
-        const newNode = this.#linkedList.insert(0, node.element);
-        this.#references.set(key, newNode);
+        this.#linkedList.removeNode(ref.node);
+        const newNode = this.#linkedList.insert(0, key);
+        this.#references.set(key, { value: ref.value, node: newNode });
 
-        return node.element.value;
+        return ref.value;
     }
 
     /**
@@ -58,21 +58,20 @@ export class LeastRecentlyUsed<Value, Key = Value> {
      * @param value - data to update.
      */
     set(key: Key, value: Value) {
-        const existingNode = this.#references.get(key);
-        const entry: CacheEntry<Key, Value> = { key, value };
+        const existingRef = this.#references.get(key);
 
-        if (existingNode) {
-            this.#linkedList.removeNode(existingNode);
-            const newNode = this.#linkedList.insert(0, entry);
-            this.#references.set(key, newNode);
+        if (existingRef) {
+            this.#linkedList.removeNode(existingRef.node);
+            const newNode = this.#linkedList.insert(0, key);
+            this.#references.set(key, { value, node: newNode });
         } else {
-            const node = this.#linkedList.insert(0, entry);
-            this.#references.set(key, node);
+            const node = this.#linkedList.insert(0, key);
+            this.#references.set(key, { value, node });
 
             if (this.size > this.#limit) {
                 const tailNode = this.#linkedList.tail;
                 if (tailNode?.element) {
-                    this.#references.delete(tailNode.element.key);
+                    this.#references.delete(tailNode.element);
                     this.#linkedList.removeNode(tailNode);
                 }
             }
@@ -84,7 +83,8 @@ export class LeastRecentlyUsed<Value, Key = Value> {
      */
     peek(): Value | null {
         const node = this.#linkedList.get(0);
-        return node?.element?.value ?? null;
+        if (!node?.element) return null;
+        return this.#references.get(node.element)?.value ?? null;
     }
 
     /**
