@@ -1,13 +1,15 @@
 import { LinkedList, Node } from "../index.js";
 
+type CacheEntry<K, V> = { key: K; value: V };
+
 export class LeastRecentlyUsed<Value, Key = Value> {
-    #references: Map<Key, Node<Value>>;
-    #linkedList: LinkedList<Value, "node", Key>;
+    #references: Map<Key, Node<CacheEntry<Key, Value>>>;
+    #linkedList: LinkedList<CacheEntry<Key, Value>, "node">;
     #limit: number;
 
     constructor(limit: number) {
         this.#references = new Map();
-        this.#linkedList = LinkedList.nodes<Value, Key>();
+        this.#linkedList = LinkedList.nodes<CacheEntry<Key, Value>>();
         this.#limit = limit;
     }
 
@@ -44,9 +46,10 @@ export class LeastRecentlyUsed<Value, Key = Value> {
         }
 
         this.#linkedList.removeNode(node);
-        this.#linkedList.insert(0, node.element);
+        const newNode = this.#linkedList.insert(0, node.element);
+        this.#references.set(key, newNode);
 
-        return node.element;
+        return node.element.value;
     }
 
     /**
@@ -55,7 +58,25 @@ export class LeastRecentlyUsed<Value, Key = Value> {
      * @param value - data to update.
      */
     set(key: Key, value: Value) {
-        throw new Error("not yet implemented");
+        const existingNode = this.#references.get(key);
+        const entry: CacheEntry<Key, Value> = { key, value };
+
+        if (existingNode) {
+            this.#linkedList.removeNode(existingNode);
+            const newNode = this.#linkedList.insert(0, entry);
+            this.#references.set(key, newNode);
+        } else {
+            const node = this.#linkedList.insert(0, entry);
+            this.#references.set(key, node);
+
+            if (this.size > this.#limit) {
+                const tailNode = this.#linkedList.tail;
+                if (tailNode?.element) {
+                    this.#references.delete(tailNode.element.key);
+                    this.#linkedList.removeNode(tailNode);
+                }
+            }
+        }
     }
 
     /**
@@ -63,7 +84,7 @@ export class LeastRecentlyUsed<Value, Key = Value> {
      */
     peek(): Value | null {
         const node = this.#linkedList.get(0);
-        return node?.element ?? null;
+        return node?.element?.value ?? null;
     }
 
     /**

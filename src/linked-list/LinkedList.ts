@@ -14,6 +14,7 @@ export class LinkedList<
   Key = Value,
 > {
   #head: Node<Value>;
+  #tail: Node<Value>;
   #size: number;
   #matcher: (element: Value) => Key;
   #nodes: WeakSet<Node<Value>>;
@@ -21,6 +22,7 @@ export class LinkedList<
 
   private constructor(mode: Mode) {
     this.#head = new Node();
+    this.#tail = this.#head;
     this.#size = 0;
     this.#matcher = (element: Value) => element as unknown as Key;
     this.#nodes = new WeakSet();
@@ -45,6 +47,16 @@ export class LinkedList<
   }
 
   /**
+   * Returns the tail element/node, or null if the list is empty.
+   */
+  get tail(): ListReturnNullable<Value, Mode> {
+    if (this.#tail === this.#head) {
+      return null as ListReturnNullable<Value, Mode>;
+    }
+    return this.#returnNullable(this.#tail) as ListReturnNullable<Value, Mode>;
+  }
+
+  /**
    * Inserts an element at the specified index.
    * Use insert(0, value) for unshift, insert(size, value) for push.
    */
@@ -65,6 +77,8 @@ export class LinkedList<
     node.prev = pointer;
     if (node.next) {
       node.next.prev = node;
+    } else {
+      this.#tail = node;
     }
     pointer.next = node;
     this.#size += 1;
@@ -94,6 +108,8 @@ export class LinkedList<
     }
     if (pointer.next) {
       pointer.next.prev = pointer.prev;
+    } else if (pointer.prev) {
+      this.#tail = pointer.prev;
     }
 
     this.#size -= 1;
@@ -175,6 +191,8 @@ export class LinkedList<
       if (pointer.element && this.#compare(key, pointer.element)) {
         if (pointer.next) {
           pointer.next.prev = pointer.prev;
+        } else if (pointer.prev) {
+          this.#tail = pointer.prev;
         }
         if (pointer.prev) {
           pointer.prev.next = pointer.next;
@@ -206,6 +224,7 @@ export class LinkedList<
       latter.prev = former;
     } else if (former) {
       former.next = null;
+      this.#tail = former;
     } else if (latter) {
       latter.prev = null;
     }
