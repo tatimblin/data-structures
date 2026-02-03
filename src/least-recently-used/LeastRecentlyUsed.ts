@@ -1,11 +1,13 @@
-import { LinkedList } from "../index.js";
+import { LinkedList, Node } from "../index.js";
 
 export class LeastRecentlyUsed<Value, Key = Value> {
-    #linkedList: LinkedList<Value, Key>;
+    #references: Map<Key, Node<Value>>;
+    #linkedList: LinkedList<Value, "node", Key>;
     #limit: number;
 
     constructor(limit: number) {
-        this.#linkedList = new LinkedList<Value, Key>();
+        this.#references = new Map();
+        this.#linkedList = LinkedList.nodes<Value, Key>();
         this.#limit = limit;
     }
 
@@ -24,13 +26,11 @@ export class LeastRecentlyUsed<Value, Key = Value> {
     }
 
     /**
-     * Update the limit of an existing cache.
-     * @param limit - max number of elements.
-     * @returns this
+     * Resize the cache.
+     * @param limit - The max size of the cache.
      */
-    withLimit(limit: number) {
+    set limit(limit: number) {
         this.#limit = limit;
-        return this;
     }
 
     /**
@@ -38,32 +38,32 @@ export class LeastRecentlyUsed<Value, Key = Value> {
      * @param key - some piece of data to match.
      */
     get(key: Key): Value {
-        throw new Error("not yet implemented");
+        const node = this.#references.get(key);
+        if (!node?.element) {
+            throw new Error(`${key} was not found in cache`);
+        }
+
+        this.#linkedList.removeNode(node);
+        this.#linkedList.insert(0, node.element);
+
+        return node.element;
     }
 
-    /**
-     * Adds an element to the head of the cache, removes duplicate.
-     * @param value - data to add.
-     */
-    post(value: Value): void {
-        throw new Error("not yet implemented");
-    }
-    
     /**
      * Updates a value in the cache in-place if found, otherwise adds to the head of the cache.
+     * @param key - the key.
      * @param value - data to update.
-     * @param key - explicitly provide the key.
      */
-    put(value: Value, key?: Key) {
+    set(key: Key, value: Value) {
         throw new Error("not yet implemented");
     }
 
     /**
-     * Removes an element from the cache.
-     * @param key - some piece of data to match.
+     * Returns the head of the cache.
      */
-    delete(key: Key): Value {
-        throw new Error("not yet implemented");
+    peek(): Value | null {
+        const node = this.#linkedList.get(0);
+        return node?.element ?? null;
     }
 
     /**
@@ -74,17 +74,32 @@ export class LeastRecentlyUsed<Value, Key = Value> {
     }
 
     /**
-     * Returns true if element exists in cache, without moving it to the head of the cache.
-     * @param key - some piece of data to match.
+     * Returns the keys of the cache.
      */
-    has(key: Key): boolean {
+    keys(): Key[] {
         throw new Error("not yet implemented");
     }
 
     /**
-     * Return an array of each element in the cache.
+     * Returns the values of the cache.
      */
-    toArray(): Value[] {
+    values(): Value[] {
+        throw new Error("not yet implemented");
+    }
+
+    /**
+     * Returns true if element exists in cache, without moving it to the head of the cache.
+     * @param key - some piece of data to match.
+     */
+    has(key: Key): boolean {
+        return this.#references.has(key);
+    }
+
+    /**
+     * Removes an element from the cache.
+     * @param key - some piece of data to match.
+     */
+    delete(key: Key): void {
         throw new Error("not yet implemented");
     }
 

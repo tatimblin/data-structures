@@ -1,12 +1,12 @@
 import { LinkedList } from "./LinkedList.js";
 
-describe("LinkedList.push()", () => {
+describe("LinkedList.size", () => {
   it("adds multiple nodes to linked list", () => {
-    const LL = new LinkedList<string>();
+    const LL = LinkedList.elements<string>();
 
-    LL.push("My first node");
-    LL.push("My second node");
-    LL.push("My third node");
+    LL.insert(LL.size, "My first node");
+    LL.insert(LL.size, "My second node");
+    LL.insert(LL.size, "My third node");
 
     expect(LL.size).toEqual(3);
   });

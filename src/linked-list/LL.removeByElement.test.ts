@@ -10,108 +10,108 @@ const { users, cities }: {
   cities: City[],
 } = JSON.parse(rawData);
 
-describe("LinkedList.removeByElement()" , () => {
+describe("LinkedList.removeBy()", () => {
   it("removes the head of a linked list with a single node", () => {
-    const LL = new LinkedList<number>();
+    const LL = LinkedList.elements<number>();
 
-    LL.push(1);
+    LL.insert(LL.size, 1);
 
-    expect(LL.removeByElement(1)).toEqual([1, 0]);
+    expect(LL.removeBy(1)).toEqual(1);
     expect(LL.size).toEqual(0);
   });
 
   it("removes a node from the head of a linked list", () => {
-    const LL = new LinkedList<number>();
+    const LL = LinkedList.elements<number>();
 
-    LL.push(1);
-    LL.push(2);
-    LL.push(3);
+    LL.insert(LL.size, 1);
+    LL.insert(LL.size, 2);
+    LL.insert(LL.size, 3);
 
-    expect(LL.removeByElement(1)).toEqual([1, 0]);
+    expect(LL.removeBy(1)).toEqual(1);
     expect(LL.size).toEqual(2);
   });
 
   it("removes a node from the middle of a linked list", () => {
-    const LL = new LinkedList<number>();
+    const LL = LinkedList.elements<number>();
 
-    LL.push(1);
-    LL.push(2);
-    LL.push(3);
-    LL.push(4);
+    LL.insert(LL.size, 1);
+    LL.insert(LL.size, 2);
+    LL.insert(LL.size, 3);
+    LL.insert(LL.size, 4);
 
-    expect(LL.removeByElement(3)).toEqual([3, 2]);
+    expect(LL.removeBy(3)).toEqual(3);
     expect(LL.size).toEqual(3);
   });
 
   it("removes a node from the middle of a linked list of arrays", () => {
-    const LL = new LinkedList<number[]>();
+    const LL = LinkedList.elements<number[]>();
 
-    LL.push([1, 2, 3]);
-    LL.push([2, 3, 4]);
-    LL.push([3, 4, 5]);
-    LL.push([4, 5, 6]);
+    LL.insert(LL.size, [1, 2, 3]);
+    LL.insert(LL.size, [2, 3, 4]);
+    LL.insert(LL.size, [3, 4, 5]);
+    LL.insert(LL.size, [4, 5, 6]);
 
-    expect(LL.removeByElement([3, 4, 5])).toEqual([[3, 4, 5], 2]);
+    expect(LL.removeBy([3, 4, 5])).toEqual([3, 4, 5]);
     expect(LL.size).toEqual(3);
   });
 
   it("removes a node from the middle of a linked list of objects", () => {
-    const LL = new LinkedList<{ first: string, last: string }>();
+    const LL = LinkedList.elements<{ first: string, last: string }>();
 
-    LL.push({ first: "Andrew", last: "Timblin"});
-    LL.push({ first: "Barbara", last: "Timblin"});
-    LL.push({ first: "Tristan", last: "Timblin"});
-    LL.push({ first: "Jeremy", last: "Timblin"});
+    LL.insert(LL.size, { first: "Andrew", last: "Timblin"});
+    LL.insert(LL.size, { first: "Barbara", last: "Timblin"});
+    LL.insert(LL.size, { first: "Tristan", last: "Timblin"});
+    LL.insert(LL.size, { first: "Jeremy", last: "Timblin"});
 
-    expect(LL.removeByElement({ first: "Tristan", last: "Timblin"})).toEqual([{ first: "Tristan", last: "Timblin"}, 2]);
+    expect(LL.removeBy({ first: "Tristan", last: "Timblin"})).toEqual({ first: "Tristan", last: "Timblin"});
     expect(LL.size).toEqual(3);
   });
 
   it("removes a node from the middle of a linked list of deep nested objects", () => {
-    const LL = new LinkedList<City>();
+    const LL = LinkedList.elements<City>();
 
-    LL.push(cities[0]);
-    LL.push(cities[1]);
-    LL.push(cities[2]);
-    LL.push(cities[3]);
+    LL.insert(LL.size, cities[0]);
+    LL.insert(LL.size, cities[1]);
+    LL.insert(LL.size, cities[2]);
+    LL.insert(LL.size, cities[3]);
 
-    expect(LL.removeByElement(cities[0])).toEqual([cities[0], 0]);
+    expect(LL.removeBy(cities[0])).toEqual(cities[0]);
     expect(LL.size).toEqual(3);
   });
 
   it("removes a node from the tail of a linked list", () => {
-    const LL = new LinkedList<number>();
+    const LL = LinkedList.elements<number>();
 
-    LL.push(1);
-    LL.push(2);
-    LL.push(3);
+    LL.insert(LL.size, 1);
+    LL.insert(LL.size, 2);
+    LL.insert(LL.size, 3);
 
-    expect(LL.removeByElement(3)).toEqual([3, 2]);
+    expect(LL.removeBy(3)).toEqual(3);
     expect(LL.size).toEqual(2);
   });
 
-  it("throws an error when index is out of bounds", () => {
-    const LL = new LinkedList<number>();
+  it("returns null when element is not found", () => {
+    const LL = LinkedList.elements<number>();
 
-    LL.push(1);
-    LL.push(2);
-    LL.push(3);
+    LL.insert(LL.size, 1);
+    LL.insert(LL.size, 2);
+    LL.insert(LL.size, 3);
 
-    expect(LL.removeByElement(0)).toEqual([null, -1]);
-    expect(LL.removeByElement(4)).toEqual([null, -1]);
+    expect(LL.removeBy(0)).toEqual(null);
+    expect(LL.removeBy(4)).toEqual(null);
   });
 
   it("removes a complex data type, using a custom matcher", () => {
-    const LL = new LinkedList<User, string>();
+    const LL = LinkedList.elements<User, string>();
 
-    LL.push(users[0]);
-    LL.push(users[1]);
-    LL.push(users[1]);
+    LL.insert(LL.size, users[0]);
+    LL.insert(LL.size, users[1]);
+    LL.insert(LL.size, users[1]);
 
-    expect(
-      LL
-        .withMatcher((user) => user.first)
-        .getByElement("Alan")
-    ).toEqual([users[1], 1]);
+    const result = LL
+      .withMatcher((user) => user.first)
+      .find("Alan");
+
+    expect(result).toEqual(users[1]);
   });
 });

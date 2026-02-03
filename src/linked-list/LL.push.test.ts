@@ -1,12 +1,12 @@
 import { LinkedList } from "./LinkedList.js";
 
-describe("LinkedList.push()", () => {
-  it("adds node to head of linked list", () => {
-    const LL = new LinkedList<string>();
+describe("LinkedList.insert() - push behavior", () => {
+  it("adds node to tail of linked list", () => {
+    const LL = LinkedList.elements<string>();
 
-    LL.push("My first node");
+    LL.insert(LL.size, "My first node");
 
-    expect(LL.getByIndex(0)).toEqual(["My first node", 0]);
+    expect(LL.get(0)).toEqual("My first node");
     expect(LL.size).toEqual(1);
   });
 });

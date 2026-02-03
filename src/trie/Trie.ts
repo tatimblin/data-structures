@@ -122,22 +122,24 @@ export class Trie {
     this.#cache = node;
 
     const result: [string, number][] = []; // TODO: replace with heap
-    const queue = new LinkedList<[Node, string]>();
-    queue.push([node, this.#prefix]);
+    const queue = LinkedList.elements<[Node, string]>();
+    queue.insert(queue.size, [node, this.#prefix]);
 
     while(queue.size > 0) {
-      const [node, word] = queue.pop() || [];
-      
-      if (!node) {
+      const item = queue.remove(queue.size - 1);
+
+      if (!item) {
         continue;
       }
 
-      if (node.complete.get() && word) {
-        result.push([word, node.weight]);
+      const [currentNode, word] = item;
+
+      if (currentNode.complete.get() && word) {
+        result.push([word, currentNode.weight]);
       }
 
-      node.children && Object.values(node.children).forEach((node) => {
-        queue.push([node, word + node.element]);
+      currentNode.children && Object.values(currentNode.children).forEach((childNode) => {
+        queue.insert(queue.size, [childNode, word + childNode.element]);
       });
     }
 
