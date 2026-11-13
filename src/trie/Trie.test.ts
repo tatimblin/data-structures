@@ -243,5 +243,96 @@ describe("Trie", () => {
 
       expect(trie.search("in")).toEqual(["interest", "indistinguishable"]);
     });
+
+    describe("starts every search from the root", () => {
+      function sentenceTrie(): Trie {
+        const trie = new Trie();
+        ["the", "they", "then", "you", "youth", "your", "yes", "to", "time", "as", "aspects", "past", "people"]
+          .forEach((word, index) => trie.add(word, index));
+        return trie;
+      }
+
+      it("does not continue from the previous search's last node", () => {
+        const trie = sentenceTrie();
+
+        expect(trie.search("the")).toEqual(["the", "they", "then"]);
+        expect(trie.search("y")).toEqual(["you", "youth", "your", "yes"]);
+      });
+
+      it("returns words for the new prefix after a full-word search", () => {
+        const trie = sentenceTrie();
+
+        trie.search("you");
+        expect(trie.search("t")).toEqual(["the", "they", "then", "to", "time"]);
+
+        trie.search("as");
+        expect(trie.search("p")).toEqual(["past", "people"]);
+      });
+
+      it("returns the same results when a search is repeated", () => {
+        const trie = sentenceTrie();
+
+        const first = trie.search("th");
+        expect(trie.search("th")).toEqual(first);
+        expect(trie.search("th")).toEqual(["the", "they", "then"]);
+      });
+
+      it("returns nothing for a prefix that only matches below the previous search", () => {
+        const trie = sentenceTrie();
+
+        trie.search("the");
+        expect(trie.search("n")).toEqual([]);
+        expect(trie.search("y")).not.toContain("they");
+      });
+
+      it("matches a shorter prefix after a longer one", () => {
+        const trie = sentenceTrie();
+
+        trie.search("youth");
+        expect(trie.search("yo")).toEqual(["you", "youth", "your"]);
+      });
+
+      it("does not return words removed after an earlier search", () => {
+        const trie = sentenceTrie();
+
+        expect(trie.search("as")).toEqual(["as", "aspects"]);
+        trie.remove("as");
+        trie.remove("aspects");
+
+        expect(trie.search("as")).toEqual([]);
+        expect(trie.search("")).toEqual([]);
+      });
+
+      it("adds and finds new words after a search", () => {
+        const trie = sentenceTrie();
+
+        trie.search("the");
+        trie.add("y", 99);
+
+        expect(trie.has("y")).toBe(true);
+        expect(trie.has("they")).toBe(true);
+        expect(trie.search("y")).toEqual(["you", "youth", "your", "yes", "y"]);
+      });
+    });
+
+    describe("with an empty prefix", () => {
+      it("returns nothing on a fresh trie", () => {
+        const trie = new Trie();
+
+        trie.add("anything");
+
+        expect(trie.search("")).toEqual([]);
+      });
+
+      it("returns nothing after a previous search", () => {
+        const trie = new Trie();
+
+        trie.add("the");
+        trie.add("they");
+        trie.search("the");
+
+        expect(trie.search("")).toEqual([]);
+      });
+    });
   });
 });

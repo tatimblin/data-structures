@@ -3,13 +3,9 @@ import { LinkedList } from "../linked-list/LinkedList.js";
 
 export class Trie {
   #root: Node;
-  #cache: Node;
-  #prefix: string;
 
   constructor() {
     this.#root = new Node("");
-    this.#cache = this.#root;
-    this.#prefix = "";
   }
 
   /**
@@ -99,31 +95,25 @@ export class Trie {
   }
 
   /**
-   * Traverses to the last available node, and preforms a breadth-first-search to
-   * return all descendant strings. Results can be limited for brevity.
-   * @param word - string to determine the starting node for search
+   * Returns every word that starts with `prefix`, ordered by ascending weight.
+   * Each call walks from the root, so results never depend on earlier calls.
+   * An empty prefix returns an empty array.
+   * @param prefix - string every returned word starts with
    */
-  search(word: string): string[] {
-    const chars = word.split("");
-
-    let node: Node;
-    try{
-      node = this.#cursor([...chars], this.#cache);
-    } catch {
-      try {
-        node = this.#cursor([...chars], this.#root);
-      } catch {
-        return [];
-      }
+  search(prefix: string): string[] {
+    if (prefix === "") {
+      return [];
     }
 
-    const start = node.element;
+    const node = this.#find(prefix);
 
-    this.#cache = node;
+    if (!node) {
+      return [];
+    }
 
     const result: [string, number][] = []; // TODO: replace with heap
     const queue = LinkedList.elements<[Node, string]>();
-    queue.insert(queue.size, [node, this.#prefix]);
+    queue.insert(queue.size, [node, prefix]);
 
     while(queue.size > 0) {
       const item = queue.remove(queue.size - 1);
@@ -148,27 +138,28 @@ export class Trie {
     return result.map(([word]) => word);
   }
 
-  #cursor(chars: string[], node: Node): Node {
-    if (chars.length === 0) {
-      return node;
+  /**
+   * Walks from the root along `prefix` and returns the node it ends on, or
+   * null if the trie has no path for it.
+   */
+  #find(prefix: string): Node | null {
+    let node = this.#root;
+
+    // split("") to match how add() keys nodes (UTF-16 code units)
+    for (const char of prefix.split("")) {
+      const child = node.children[char];
+      if (!child) {
+        return null;
+      }
+      node = child;
     }
 
-    const char = chars.shift() as string;
-    this.#prefix = this.#prefix + char;
-
-    if (node.children[char]) {
-      return this.#cursor(chars, node.children[char]);
-    }
-
-    this.#cache = this.#root;
-    this.#prefix = "";
-    throw new Error("word not found");
+    return node;
   }
 
   __debug() {
     return {
       root: this.#root,
-      cache: this.#cache,
     };
   }
 }
